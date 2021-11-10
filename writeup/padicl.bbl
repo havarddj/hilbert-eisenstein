@@ -1,0 +1,61 @@
+\begin{thebibliography}{{Cas}79}
+
+\bibitem[{Cas}79]{cassou-nogues1979}
+Pierrette {Cassou-Nogues}.
+\newblock Valeurs aux entiers n\'egatifs des fonctions z\^eta et fonctions
+  z\^eta \$p\$-adiques.
+\newblock {\em Inventiones mathematicae}, 51(1):29--59, 1979.
+
+\bibitem[CF67]{cassels1967}
+John William~Scott Cassels and Albrecht Fr{\"o}hlich.
+\newblock {\em Algebraic Number Theory: Proceedings of an Instructional
+  Conference}.
+\newblock {Academic press}, 1967.
+
+\bibitem[DR80]{deligne1980}
+Pierre Deligne and Kenneth~A. Ribet.
+\newblock Values of abelian {{L}}-functions at negative integers over totally
+  real fields.
+\newblock {\em Inventiones Mathematicae}, 59(3):227--286, October 1980.
+
+\bibitem[EJV11]{ellenberg2011}
+Jordan~S Ellenberg, Sonal Jain, and Akshay Venkatesh.
+\newblock Modeling {{$\lambda$}}-invariants by p-adic random matrices.
+\newblock {\em Communications on pure and applied mathematics},
+  64(9):1243--1262, 2011.
+
+\bibitem[IR90]{ireland1990}
+Kenneth Ireland and Michael Rosen.
+\newblock {\em A {{Classical Introduction}} to {{Modern Number Theory}}}.
+\newblock Graduate {{Texts}} in {{Mathematics}}. {Springer-Verlag}, {New York},
+  second edition, 1990.
+
+\bibitem[Lan90]{lang1990}
+Serge Lang.
+\newblock {\em Cyclotomic {{Fields I}} and {{II}}}, volume 121 of {\em Graduate
+  {{Texts}} in {{Mathematics}}}.
+\newblock {Springer New York}, {New York, NY}, 1990.
+
+\bibitem[LV21]{lauder2021}
+Alan Lauder and Jan Vonk.
+\newblock Computing \$p\$-adic {{L}}-functions of totally real fields.
+\newblock {\em Mathematics of Computation}, page~1, June 2021.
+
+\bibitem[Miy89]{miyake1989}
+Toshitsune Miyake.
+\newblock {\em Modular {{Forms}}}.
+\newblock Springer {{Monographs}} in {{Mathematics}}. {Springer-Verlag},
+  {Berlin Heidelberg}, 1989.
+
+\bibitem[Rob13]{roblot2013}
+Xavier-Fran{\c c}ois Roblot.
+\newblock Computing p-adic {{L}}-functions of totally real number fields.
+\newblock {\em Mathematics of Computation}, 84(292):831--874, 2013.
+
+\bibitem[Wei52]{weil1952}
+Andre Weil.
+\newblock Jacobi {{Sums}} as "{{Grossencharaktere}}".
+\newblock {\em Transactions of the American Mathematical Society},
+  73(3):487--495, 1952.
+
+\end{thebibliography}

@@ -1,0 +1,15 @@
+load "code/Discriminants.m";
+load "code/Test/DiagonalRestrictions.m";
+load "code/Test/pAdicL.m";
+/* import "/home/havard/Projects/HilbertEisenstein/magma/code/Test/pAdicL.m": pAdicLfunction; */
+
+function getLambda(F,p : m :=10)
+    P,Q := pAdicLfunction(F,p,m);
+    lambda := 0;
+    L := Coefficients(Q);
+    n := 1;		
+    while((L[n] mod p) eq 0) do
+	lambda := lambda + 1;
+	n := n + 1;
+    end while;	
+end function;

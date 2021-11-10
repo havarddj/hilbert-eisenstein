@@ -1,0 +1,1286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2021-07-17 Sat 13:11 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Computing p-adic L-functions using Hilbert Eisenstein series</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Håvard Damm-Johnsen" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+// @license magnet:?xt=urn:btih:1f739d935676111cfff4b4693e3816e664797050&amp;dn=gpl-3.0.txt GPL-v3-or-Later
+<!--/*--><![CDATA[/*><!--*/
+     function CodeHighlightOn(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.add("code-highlighted");
+         target.classList.add("code-highlighted");
+       }
+     }
+     function CodeHighlightOff(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.remove("code-highlighted");
+         target.classList.remove("code-highlighted");
+       }
+     }
+    /*]]>*///-->
+// @license-end
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Computing p-adic L-functions using Hilbert Eisenstein series</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org4d3a18a">1. Step (1)</a></li>
+<li><a href="#org36166ca">2. Step (2):</a></li>
+<li><a href="#org605e5e4">3. Step (3):</a></li>
+<li><a href="#org76c6da7">4. Ring class groups examples</a>
+<ul>
+<li><a href="#org4363e72">4.1. Arbitrary ideals:</a></li>
+</ul>
+</li>
+<li><a href="#orgf5a3200">5. Trivial character</a></li>
+</ul>
+</div>
+</div>
+<p>
+We try to implement Algorithm 2.3 in <a class='org-ref-reference' href="#lauder2010">lauder2010</a>.
+Let \(F\) be a totally real number field of degree \(d\).
+</p>
+
+<p>
+Input: 
+</p>
+<ul class="org-ul">
+<li>\(p\) - an odd prime number,</li>
+<li>$k<sub>0</sub> - an integer in \([2, p]\),</li>
+<li>ψ - a character of F of modulus \(\mf m\), with the same parity as \(k_0\),</li>
+<li>m - a natural number.</li>
+</ul>
+
+<p>
+Output:
+</p>
+<ul class="org-ul">
+<li>\(L_p(\psi,s)\) as an element of the ring \(O[ [s] ]/(p^m)\).</li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #b1b1b1;"># </span><span style="color: #b1b1b1;">F.&lt;a&gt; = NumberField(x^3-3*x-1)</span>
+F.&lt;a&gt; = NumberField(x^2-15)
+
+<span style="color: #3b6ea8;">if</span> <span style="color: #3b6ea8;">not</span> F.is_totally_real():
+<span style="background-color: #eeeeee;"> </span>   <span style="color: #3b6ea8;">print</span>(<span style="color: #4f894c;">"F is not totally real!"</span>)
+
+<span style="color: #cb9aad;">d</span> = F.degree()
+<span style="color: #3b6ea8;">if</span> d &gt; 2:
+<span style="background-color: #eeeeee;"> </span>   <span style="color: #3b6ea8;">print</span>(<span style="color: #4f894c;">"oopsie let's stick to quadratic fields for now"</span>)
+<span style="color: #cb9aad;">psi</span> = DirichletGroup(F.discriminant(), F)[1]
+<span style="color: #cb9aad;">mfrak</span> = psi.conductor()
+<span style="color: #cb9aad;">p</span> = 5
+
+<span style="color: #3b6ea8;">if</span> p == 2:
+<span style="background-color: #eeeeee;"> </span>  <span style="color: #3b6ea8;">print</span>(<span style="color: #4f894c;">"let's do odd primes for now"</span>)
+k0 = 6
+
+<span style="color: #3b6ea8;">if</span> (psi.is_odd() <span style="color: #3b6ea8;">and</span> k0 % 2) <span style="color: #3b6ea8;">or</span> (psi.is_even() <span style="color: #3b6ea8;">and</span> k0 % 2 == 1):
+<span style="background-color: #eeeeee;"> </span>   <span style="color: #3b6ea8;">print</span>(<span style="color: #4f894c;">"psi must have parity of k0"</span>)
+
+m = psi.conductor()
+</pre>
+</div>
+
+<pre class="example" id="org51fdf1b">
+
+TypeErrorTraceback (most recent call last)
+&lt;ipython-input-435-7803ce2679e6&gt; in &lt;module&gt;
+      1 # F.&lt;a&gt; = NumberField(x^3-3*x-1)
+----&gt; 2 F = NumberField(x**Integer(2)-Integer(15), names=('a',)); (a,) = F._first_ngens(1)
+      3 
+      4 if not F.is_totally_real():
+      5     print("F is not totally real!")
+
+/usr/lib/python3.9/site-packages/sage/rings/number_field/number_field.py in NumberField(polynomial, name, check, names, embedding, latex_name, assume_disc_small, maximize_at_primes, structure, latex_names, **kwds)
+    566         return NumberFieldTower(polynomial, names=name, check=check, embeddings=embedding, latex_names=latex_name, assume_disc_small=assume_disc_small, maximize_at_primes=maximize_at_primes, structures=structure)
+    567 
+--&gt; 568     return NumberField_version2(polynomial=polynomial, name=name, check=check, embedding=embedding, latex_name=latex_name, assume_disc_small=assume_disc_small, maximize_at_primes=maximize_at_primes, structure=structure)
+    569 
+    570 class NumberFieldFactory(UniqueFactory):
+
+/usr/lib/python3.9/site-packages/sage/structure/factory.pyx in sage.structure.factory.UniqueFactory.__call__ (build/cythonized/sage/structure/factory.c:2265)()
+    367         key, kwds = self.create_key_and_extra_args(*args, **kwds)
+    368         version = self.get_version(sage_version)
+--&gt; 369         return self.get_object(version, key, kwds)
+    370 
+    371     cpdef get_object(self, version, key, extra_args):
+
+/usr/lib/python3.9/site-packages/sage/structure/factory.pyx in sage.structure.factory.UniqueFactory.get_object (build/cythonized/sage/structure/factory.c:2659)()
+    410         except KeyError:
+    411             pass
+--&gt; 412         obj = self.create_object(version, key, **extra_args)
+    413         self._cache[version, cache_key] = obj
+    414         try:
+
+/usr/lib/python3.9/site-packages/sage/rings/number_field/number_field.py in create_object(self, version, key, check)
+    699                                         structure=structure)
+    700         if polynomial.degree() == 2:
+--&gt; 701             return NumberField_quadratic(polynomial, name, latex_name, check, embedding, assume_disc_small=assume_disc_small, maximize_at_primes=maximize_at_primes, structure=structure)
+    702         else:
+    703             return NumberField_absolute(polynomial, name, latex_name, check, embedding, assume_disc_small=assume_disc_small, maximize_at_primes=maximize_at_primes, structure=structure)
+
+/usr/lib/python3.9/site-packages/sage/rings/number_field/number_field.py in __init__(self, polynomial, name, latex_name, check, embedding, assume_disc_small, maximize_at_primes, structure)
+  11514             1
+  11515         """
+&gt; 11516         NumberField_absolute.__init__(self, polynomial, name=name, check=check,
+  11517                                       embedding=embedding, latex_name=latex_name,
+  11518                                       assume_disc_small=assume_disc_small, maximize_at_primes=maximize_at_primes, structure=structure)
+
+/usr/lib/python3.9/site-packages/sage/rings/number_field/number_field.py in __init__(self, polynomial, name, latex_name, check, embedding, assume_disc_small, maximize_at_primes, structure)
+   7550             sage: TestSuite(K).run()
+   7551         """
+-&gt; 7552         NumberField_generic.__init__(self, polynomial, name, latex_name, check, embedding,
+   7553                                      assume_disc_small=assume_disc_small, maximize_at_primes=maximize_at_primes, structure=structure)
+   7554         self._element_class = number_field_element.NumberFieldElement_absolute
+
+/usr/lib/python3.9/site-packages/sage/rings/number_field/number_field.py in __init__(self, polynomial, name, latex_name, check, embedding, category, assume_disc_small, maximize_at_primes, structure)
+   1420         if check:
+   1421             if not polynomial.parent().base_ring() == QQ:
+-&gt; 1422                 raise TypeError("polynomial must be defined over rational field")
+   1423             if not polynomial.is_irreducible():
+   1424                 raise ValueError("defining polynomial (%s) must be irreducible"%polynomial)
+
+TypeError: polynomial must be defined over rational field
+</pre>
+
+
+<div id="outline-container-org4d3a18a" class="outline-2">
+<h2 id="org4d3a18a"><span class="section-number-2">1.</span> Step (1)</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Introduce
+</p>
+<ul class="org-ul">
+<li>\(M \in \N\) the positive generator of \(\mf m \cap \Z\).</li>
+<li>\(\Psi\) a Dirichlet character mod \(M\), is the restriction of \(\psi \omega^{1-k}\) to \((\Z/m\Z)^\times\) where \(\omega\) is the \(p\)-adic Teichmüller character.</li>
+<li>\(\delta_m \in \N\) the smallest integer such that:
+<ul class="org-ul">
+<li>if \(p=2\), then \(i - v_p(i!) \geq m\) for all \(i \geq \delta_m + 1\),</li>
+<li>if \(p \ne 2\), then \(2i - v_p(i!) \geq m\) for all \(i \geq \delta_m + 1\).</li>
+</ul></li>
+</ul>
+
+<p>
+(Note that \(\delta_m \le m(p-1)/(p-2)\) when \(p \ne 2\), and \(\delta_m \le m\) when \(p = 2\).)
+</p>
+
+<ul class="org-ul">
+<li>\(k_j \in \Z\) for all \(0 \le j \le \delta_m\):</li>
+<li>\(B_j\) a basis for
+\[ M_{dk_j}(\Gamma_0(M),\Psi) \pmod{ p^{\delta_m +1}, q^S}
+  \]
+for each \(0 \le j \le \delta_m\), where is \(S\) the Sturm bound for the space with \(j=\delta_m\).</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #cb9aad;">M</span> = psi.modulus()
+<span style="color: #cb9aad;">Psi</span> = psi
+<span style="color: #cb9aad;">deltam</span> = ceil(m*(p-1)/(p-2))
+
+<span style="color: #cb9aad;">kj</span> = [2+j*(p-1) <span style="color: #3b6ea8;">for</span> j <span style="color: #3b6ea8;">in</span> [0..deltam]]  <span style="color: #b1b1b1;"># </span><span style="color: #b1b1b1;">note k0 = 2 as above</span>
+
+<span style="color: #cb9aad;">S</span> = ModularForms(Psi,d*kj[deltam]).sturm_bound()  <span style="color: #b1b1b1;"># </span><span style="color: #b1b1b1;">this is the precision in q necessary</span>
+
+<span style="color: #cb9aad;">Mdkj</span> = [ModularForms(Psi, d*kj[j], base_ring=QQ) <span style="color: #3b6ea8;">for</span> j <span style="color: #3b6ea8;">in</span> [0..deltam]]
+
+</pre>
+</div>
+
+<pre class="example" id="orgd2c870f">
+
+KeyErrorTraceback (most recent call last)
+/usr/lib/python3.9/site-packages/sage/structure/coerce.pyx in sage.structure.coerce.CoercionModel.bin_op (build/cythonized/sage/structure/coerce.c:10476)()
+   1188         try:
+-&gt; 1189             action = self._action_maps.get(xp, yp, op)
+   1190         except KeyError:
+
+/usr/lib/python3.9/site-packages/sage/structure/coerce_dict.pyx in sage.structure.coerce_dict.TripleDict.get (build/cythonized/sage/structure/coerce_dict.c:8031)()
+   1327         if not valid(cursor.key_id1):
+-&gt; 1328             raise KeyError((k1, k2, k3))
+   1329         value = &lt;object&gt;cursor.value
+
+KeyError: (&lt;class 'sage.structure.sequence.Sequence_generic'&gt;, Integer Ring, &lt;built-in function mul&gt;)
+
+During handling of the above exception, another exception occurred:
+
+TypeErrorTraceback (most recent call last)
+&lt;ipython-input-436-a88c74333e7b&gt; in &lt;module&gt;
+      1 M = psi.modulus()
+      2 Psi = psi
+----&gt; 3 deltam = ceil(m*(p-Integer(1))/(p-Integer(2)))
+      4 
+      5 kj = [Integer(2)+j*(p-Integer(1)) for j in (ellipsis_range(Integer(0),Ellipsis,deltam))]  # note k0 = 2 as above
+
+/usr/lib/python3.9/site-packages/sage/rings/integer.pyx in sage.rings.integer.Integer.__mul__ (build/cythonized/sage/rings/integer.c:14022)()
+   1980             return y
+   1981 
+-&gt; 1982         return coercion_model.bin_op(left, right, operator.mul)
+   1983 
+   1984     cpdef _mul_(self, right):
+
+/usr/lib/python3.9/site-packages/sage/structure/coerce.pyx in sage.structure.coerce.CoercionModel.bin_op (build/cythonized/sage/structure/coerce.c:10526)()
+   1189             action = self._action_maps.get(xp, yp, op)
+   1190         except KeyError:
+-&gt; 1191             action = self.get_action(xp, yp, op, x, y)
+   1192         if action is not None:
+   1193             if (&lt;Action&gt;action)._is_left:
+
+/usr/lib/python3.9/site-packages/sage/structure/coerce.pyx in sage.structure.coerce.CoercionModel.get_action (build/cythonized/sage/structure/coerce.c:17358)()
+   1718         except KeyError:
+   1719             pass
+-&gt; 1720         action = self.discover_action(R, S, op, r, s)
+   1721         action = self.verify_action(action, R, S, op)
+   1722         self._action_maps.set(R, S, op, action)
+
+/usr/lib/python3.9/site-packages/sage/structure/coerce.pyx in sage.structure.coerce.CoercionModel.discover_action (build/cythonized/sage/structure/coerce.c:18863)()
+   1854 
+   1855         if isinstance(S, Parent):
+-&gt; 1856             action = (&lt;Parent&gt;S).get_action(R, op, False, s, r)
+   1857             if action is not None:
+   1858                 return action
+
+/usr/lib/python3.9/site-packages/sage/structure/parent.pyx in sage.structure.parent.Parent.get_action (build/cythonized/sage/structure/parent.c:20164)()
+   2475         action = self._get_action_(S, op, self_on_left)
+   2476         if action is None:
+-&gt; 2477             action = self.discover_action(S, op, self_on_left, self_el, S_el)
+   2478 
+   2479         if action is not None:
+
+/usr/lib/python3.9/site-packages/sage/structure/parent.pyx in sage.structure.parent.Parent.discover_action (build/cythonized/sage/structure/parent.c:21182)()
+   2556                 # detect actions defined by _rmul_, _lmul_, _act_on_, and _acted_upon_ methods
+   2557                 from .coerce_actions import detect_element_action
+-&gt; 2558                 action = detect_element_action(self, S, self_on_left, self_el, S_el)
+   2559                 if action is not None:
+   2560                     return action
+
+/usr/lib/python3.9/site-packages/sage/structure/coerce_actions.pyx in sage.structure.coerce_actions.detect_element_action (build/cythonized/sage/structure/coerce_actions.c:5313)()
+    222     try:
+    223         if x._act_on_(y, X_on_left) is not None:
+--&gt; 224             return ActOnAction(X, Y, X_on_left, False)
+    225     except CoercionException:
+    226         _record_exception()
+
+/usr/lib/python3.9/site-packages/sage/structure/coerce_actions.pyx in sage.structure.coerce_actions.GenericAction.__init__ (build/cythonized/sage/structure/coerce_actions.c:3854)()
+     72 
+     73         """
+---&gt; 74         Action.__init__(self, G, S, is_left, operator.mul)
+     75         if check:
+     76             res = self.act(G.an_element(), S.an_element())
+
+/usr/lib/python3.9/site-packages/sage/categories/action.pyx in sage.categories.action.Action.__init__ (build/cythonized/sage/categories/action.c:3155)()
+     94     def __init__(self, G, S, is_left=True, op=None):
+     95         from .groupoid import Groupoid
+---&gt; 96         Functor.__init__(self, Groupoid(G), category(S))
+     97         self.G = G
+     98         self.US = ref(S)
+
+/usr/lib/python3.9/site-packages/sage/categories/action.pyx in sage.categories.action.category (build/cythonized/sage/categories/action.c:2845)()
+     70 cdef inline category(x):
+     71     try:
+---&gt; 72         return x.category()
+     73     except AttributeError:
+     74         from sage.categories.objects import Objects
+
+TypeError: unbound method SageObject.category() needs an argument
+</pre>
+</div>
+</div>
+<div id="outline-container-org36166ca" class="outline-2">
+<h2 id="org36166ca"><span class="section-number-2">2.</span> Step (2):</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+For all 1 ≤ n ≤ S − 1, compute the index sets
+\[ X_n = \bigcup_{\mc C \in \mathrm{Cl}_{\mf m}^+} \mbb I(n,\mc C)_{\mf m}\]
+where
+\[
+\mbb I(n,\mc C)_{\mf m} := \qty{(\mf a, \nu) \in \mscr I_{F,\mf m} \times \mf d^{-1}_+ : \substack{ \tr(\nu)= n,\ \mf a \mid (\nu) \mf d \\ (\mf a, \mf m) = 1,\  [\nu] = \mc C} }
+\]
+</p>
+
+<p>
+It is probably a good idea to do this explicitly for \(d=2\), and leave \(d=3\) for later.
+In this case we can use the RM theory in section 3
+</p>
+
+<p>
+Input:
+</p>
+<ul class="org-ul">
+<li>\(n\) an integer</li>
+<li>\(\mc C\) an element of \(\mathrm{Cl}_{D}^+\) BUT actually a quadratic form of discriminant \(D\)</li>
+</ul>
+
+
+<p>
+Output:
+</p>
+<ul class="org-ul">
+<li><p>
+the set \(\mbb I(n,\mc C)_{D}\) as above (note \(\mf m \to D\))
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #cb9aad;">n</span> = 34
+<span style="color: #cb9aad;">D</span> = mfrak
+<span style="color: #cb9aad;">D0</span> = D.squarefree_part()
+<span style="color: #cb9aad;">f</span> = sqrt(D/D0)
+<span style="color: #cb9aad;">Q</span> = BinaryQF_reduced_representatives(D)[0]
+<span style="color: #cb9aad;">a</span>, <span style="color: #cb9aad;">b</span>, <span style="color: #cb9aad;">c</span> = Q
+<span style="color: #cb9aad;">tau</span> = (-b + sqrt(D))/(2*a)
+</pre>
+</div>
+
+<pre class="example" id="orgdf3760a">
+
+  ZeroDivisionErrorTraceback (most recent call last)
+  &lt;ipython-input-437-1aa7749c4785&gt; in &lt;module&gt;
+	5 Q = BinaryQF_reduced_representatives(D)[Integer(0)]
+	6 a, b, c = Q
+  ----&gt; 7 tau = (-b + sqrt(D))/(Integer(2)*a)
+
+  /usr/lib/python3.9/site-packages/sage/rings/integer.pyx in sage.rings.integer.Integer.__truediv__ (build/cythonized/sage/rings/integer.c:14345)()
+     2038         if type(left) is type(right):
+     2039             if mpz_sgn((&lt;Integer&gt;right).value) == 0:
+  -&gt; 2040                 raise ZeroDivisionError("rational division by zero")
+     2041             x = &lt;Rational&gt; Rational.__new__(Rational)
+     2042             mpq_div_zz(x.value, (&lt;Integer&gt;left).value, (&lt;Integer&gt;right).value)
+
+  ZeroDivisionError: rational division by zero
+</pre></li>
+</ul>
+<p>
+(0) Determine \(\tau \in \mf h\) so that \(\mc C\) is represented by \([1,\tau]\).
+Actually, it is probably better to work with quadratic forms directly in the algorithm (since these are actually more or less implemented)
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #cb9aad;">Stab</span> = []
+<span style="color: #3b6ea8;">for</span> a <span style="color: #3b6ea8;">in</span> [-1..1]:
+<span style="background-color: #eeeeee;"> </span>   <span style="color: #3b6ea8;">for</span> b <span style="color: #3b6ea8;">in</span> [-1..1]:
+<span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="color: #3b6ea8;">for</span> c <span style="color: #3b6ea8;">in</span> [-1..1]:
+<span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="color: #3b6ea8;">for</span> d <span style="color: #3b6ea8;">in</span> [-1..1]:
+<span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="color: #3b6ea8;">if</span> a*d-b*c == 1:
+<span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   s = Matrix(ZZ,[[a,b],[c,d]])
+<span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="color: #3b6ea8;">if</span> s^(12) == Matrix(ZZ,[[1,0],[0,1]]):
+<span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   Stab.append(s)
+
+<span style="color: #b1b1b1;"># </span><span style="color: #b1b1b1;">we might be able to consider only conjugacy classes?</span>
+<span style="color: #b1b1b1;"># </span><span style="color: #b1b1b1;">Stab =[Matrix(ZZ,[[0,1],[-1,0]]),Matrix(ZZ,[[0,1],[-1,-1]]), Matrix(ZZ,[[0,-1],[1,1]])]</span>
+Stab 
+</pre>
+</div>
+
+<pre class="example">
+[
+[-1 -1]  [-1  0]  [-1  1]  [ 0 -1]  [ 0 -1]  [ 0 -1]  [ 0  1]  [ 0  1]
+[ 1  0], [ 0 -1], [-1  0], [ 1 -1], [ 1  0], [ 1  1], [-1 -1], [-1  0],
+
+[ 0  1]  [ 1 -1]  [1 0]  [ 1  1]
+[-1  1], [ 1  0], [0 1], [-1  0]
+]
+</pre>
+
+
+<p>
+(1) Compute the set
+\[ M_n = \qty{ \mqty(n/d & j \\ 0 & d) : d \mid n, \ (d, n/d) = 1, \ 0 \le j \le d-1}
+\]
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #cb9aad;">Mn</span> = []
+<span style="color: #3b6ea8;">for</span> d <span style="color: #3b6ea8;">in</span> divisors(n):
+<span style="background-color: #eeeeee;"> </span>   <span style="color: #3b6ea8;">if</span> gcd(d, n/d) == 1:
+<span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="color: #3b6ea8;">for</span> j <span style="color: #3b6ea8;">in</span> [0..d-1]:
+<span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   Mn.append(Matrix(ZZ,[[n/d,j], [0,d]]))
+
+<span style="color: #29838d;">len</span>(Mn)
+</pre>
+</div>
+
+<pre class="example">
+54
+</pre>
+
+
+<p>
+(2) For each \(\gamma_n \in M_n\), do the following:
+Test whether for some $&gamma;&rsquo;<sub>n</sub> $ appearing before \(\gamma_n\), we have \(\gamma_n' \cdot \mathrm{Stab}_{\Sl_2(\Z)}(\tau)\cdot \gamma_n^{-1} \subset \Sl_2(\Z)\). If not, set flag to false.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #cb9aad;">RMn</span> = []
+<span style="color: #3b6ea8;">def</span> <span style="color: #29838d;">is_in_SL2Z</span>(gamman,gnp,Stab):
+<span style="background-color: #eeeeee;"> </span>   <span style="color: #b1b1b1;"># </span><span style="color: #b1b1b1;">"""Returns True if $\gamma_n'\mathrm{Stab(\tau)}\gamma_n^-1</span>
+<span style="background-color: #eeeeee;"> </span>   <span style="color: #b1b1b1;"># </span><span style="color: #b1b1b1;">\subset \Sl_2(\Z), and false otherwise"""    </span>
+<span style="background-color: #eeeeee;"> </span>   <span style="color: #cb9aad;">flag</span> = <span style="color: #97365b;">True</span>
+<span style="background-color: #eeeeee;"> </span>   <span style="color: #3b6ea8;">for</span> s <span style="color: #3b6ea8;">in</span> <span style="color: #cb9aad;">Stab</span>:
+<span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   Mat = gnp*s*(gamman^-1)
+<span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="color: #3b6ea8;">for</span> i <span style="color: #3b6ea8;">in</span> [0..1]:
+<span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="color: #3b6ea8;">for</span> j <span style="color: #3b6ea8;">in</span> [0..1]:
+<span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="color: #3b6ea8;">if</span> <span style="color: #3b6ea8;">not</span> Mat[i][j].is_integer():
+<span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="color: #cb9aad;">flag</span> = <span style="color: #97365b;">False</span>
+<span style="background-color: #eeeeee;"> </span>   <span style="color: #3b6ea8;">return</span>(flag)
+
+<span style="color: #3b6ea8;">for</span> k <span style="color: #3b6ea8;">in</span> [0..<span style="color: #29838d;">len</span>(Mn)-1]:
+<span style="background-color: #eeeeee;"> </span>   <span style="color: #cb9aad;">gamman</span> = Mn[k]
+<span style="background-color: #eeeeee;"> </span>   <span style="color: #cb9aad;">flag</span> = <span style="color: #97365b;">False</span>                <span style="color: #b1b1b1;"># </span><span style="color: #b1b1b1;">if True, then there exists some gamma_n'</span>
+<span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="color: #b1b1b1;"># </span><span style="color: #b1b1b1;">for which is_in_SL2Z is true</span>
+<span style="background-color: #eeeeee;"> </span>   <span style="color: #3b6ea8;">for</span> gnp <span style="color: #3b6ea8;">in</span> <span style="color: #cb9aad;">Mn</span>[:k-1]:
+<span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="color: #3b6ea8;">if</span> is_in_SL2Z(gamman, gnp, Stab):
+<span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   flag = <span style="color: #97365b;">True</span>
+<span style="background-color: #eeeeee;"> </span>   <span style="color: #3b6ea8;">if</span> <span style="color: #3b6ea8;">not</span> <span style="color: #cb9aad;">flag</span>:
+<span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   Q2 = Q.matrix_action_left(gamman)
+<span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="color: #3b6ea8;">if</span> gcd(f, Q2[0]) == 1:
+<span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   RMn.append([Q2.reduced_form(),gamman])
+<span style="color: #29838d;">len</span>(RMn)
+
+
+</pre>
+</div>
+
+<pre class="example">
+0
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org605e5e4" class="outline-2">
+<h2 id="org605e5e4"><span class="section-number-2">3.</span> Step (3):</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+For each \(0\le k_j\le \delta_m\) compute 
+\[
+  \Delta_j^{\ge 1}(q) :=2^d \sum_{n=1}^{S-1}\qty(\sum_{(\mf a, \nu)\in X_n}\psi(\mf a) \mathrm{Nm}(\mf a)^{k_j-1})q^n
+  \]
+to precision \(p^{\delta_m}\).
+</p>
+
+<p>
+Key difficulty: evaluate \(\psi(\mf a)\). The rest we can do with our current tools.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #b1b1b1;"># </span><span style="color: #b1b1b1;">R.&lt;q&gt; = PowerSeriesRing(QQ)</span>
+
+load(<span style="color: #4f894c;">"worksheet.sage"</span>)
+<span style="color: #b1b1b1;"># </span><span style="color: #b1b1b1;">DeltaList = [2^d*sum(q^n * sum(psi(stableRoot(Q))*Q2[0]^kj[j] for [Q2, nu] in get_RM_set(n,Q) for Q in  BinaryQF_reduced_representatives(mfrak)) for n in [1..S-1]) for j in [0..deltam]]</span>
+
+<span style="color: #b1b1b1;"># </span><span style="color: #b1b1b1;">[psi(stableRoot(Q))*A[0]^(kj[0]-1) for Q in BinaryQF_reduced_representatives(mfrak) for [A, nu] in get_RM_set(n,Q)]</span>
+
+<span style="color: #b1b1b1;"># </span><span style="color: #b1b1b1;">psi(stableRoot(BinaryQF_reduced_representatives(mfrak)[1]))</span>
+
+compute_Delta_j()
+
+<span style="color: #b1b1b1;"># </span><span style="color: #b1b1b1;">RMlist = [get_RM_set(n, Q) for n in [1..10]]</span>
+<span style="color: #b1b1b1;"># </span><span style="color: #b1b1b1;">for n in [1..12]:</span>
+<span style="color: #b1b1b1;">#     </span><span style="color: #b1b1b1;">print(len(get_RM_set(n,Q)))</span>
+
+<span style="color: #b1b1b1;"># </span><span style="color: #b1b1b1;">BinaryQF_reduced_representatives(mfrak)</span>
+
+</pre>
+</div>
+
+<pre class="example">
+
+NameErrorTraceback (most recent call last)
+&lt;ipython-input-441-283b04712645&gt; in &lt;module&gt;
+      8 # psi(stableRoot(BinaryQF_reduced_representatives(mfrak)[1]))
+      9 
+---&gt; 10 compute_Delta_j()
+     11 
+     12 # RMlist = [get_RM_set(n, Q) for n in [1..10]]
+
+NameError: name 'compute_Delta_j' is not defined
+</pre>
+</div>
+</div>
+
+
+
+
+
+
+
+
+<div id="outline-container-org76c6da7" class="outline-2">
+<h2 id="org76c6da7"><span class="section-number-2">4.</span> Ring class groups examples</h2>
+<div class="outline-text-2" id="text-4">
+<div class="org-src-container">
+<pre class="src src-jupyter-python">load(<span style="color: #4f894c;">"worksheet.sage"</span>)
+F.&lt;a&gt; = NumberField(x^2-12)
+<span style="color: #3b6ea8;">for</span> n <span style="color: #3b6ea8;">in</span> sample([1..100],3):
+<span style="background-color: #eeeeee;"> </span>   <span style="color: #cb9aad;">O</span> = F.order(1,n*a)
+<span style="background-color: #eeeeee;"> </span>   <span style="color: #3b6ea8;">print</span>(O.gens(), <span style="color: #4f894c;">"\n f="</span>, conductor(O), <span style="color: #4f894c;">"\n Cl^+:"</span>, narrow_class_group(O), <span style="color: #4f894c;">"\n"</span>)
+</pre>
+</div>
+
+<pre class="example" id="orgbb8cf7e">
+
+TypeErrorTraceback (most recent call last)
+&lt;ipython-input-442-52423a89322a&gt; in &lt;module&gt;
+      1 load("worksheet.sage")
+----&gt; 2 F = NumberField(x**Integer(2)-Integer(12), names=('a',)); (a,) = F._first_ngens(1)
+      3 for n in sample((ellipsis_range(Integer(1),Ellipsis,Integer(100))),Integer(3)):
+      4     O = F.order(Integer(1),n*a)
+      5     print(O.gens(), "\n f=", conductor(O), "\n Cl^+:", narrow_class_group(O), "\n")
+
+/usr/lib/python3.9/site-packages/sage/rings/number_field/number_field.py in NumberField(polynomial, name, check, names, embedding, latex_name, assume_disc_small, maximize_at_primes, structure, latex_names, **kwds)
+    566         return NumberFieldTower(polynomial, names=name, check=check, embeddings=embedding, latex_names=latex_name, assume_disc_small=assume_disc_small, maximize_at_primes=maximize_at_primes, structures=structure)
+    567 
+--&gt; 568     return NumberField_version2(polynomial=polynomial, name=name, check=check, embedding=embedding, latex_name=latex_name, assume_disc_small=assume_disc_small, maximize_at_primes=maximize_at_primes, structure=structure)
+    569 
+    570 class NumberFieldFactory(UniqueFactory):
+
+/usr/lib/python3.9/site-packages/sage/structure/factory.pyx in sage.structure.factory.UniqueFactory.__call__ (build/cythonized/sage/structure/factory.c:2265)()
+    367         key, kwds = self.create_key_and_extra_args(*args, **kwds)
+    368         version = self.get_version(sage_version)
+--&gt; 369         return self.get_object(version, key, kwds)
+    370 
+    371     cpdef get_object(self, version, key, extra_args):
+
+/usr/lib/python3.9/site-packages/sage/structure/factory.pyx in sage.structure.factory.UniqueFactory.get_object (build/cythonized/sage/structure/factory.c:2659)()
+    410         except KeyError:
+    411             pass
+--&gt; 412         obj = self.create_object(version, key, **extra_args)
+    413         self._cache[version, cache_key] = obj
+    414         try:
+
+/usr/lib/python3.9/site-packages/sage/rings/number_field/number_field.py in create_object(self, version, key, check)
+    699                                         structure=structure)
+    700         if polynomial.degree() == 2:
+--&gt; 701             return NumberField_quadratic(polynomial, name, latex_name, check, embedding, assume_disc_small=assume_disc_small, maximize_at_primes=maximize_at_primes, structure=structure)
+    702         else:
+    703             return NumberField_absolute(polynomial, name, latex_name, check, embedding, assume_disc_small=assume_disc_small, maximize_at_primes=maximize_at_primes, structure=structure)
+
+/usr/lib/python3.9/site-packages/sage/rings/number_field/number_field.py in __init__(self, polynomial, name, latex_name, check, embedding, assume_disc_small, maximize_at_primes, structure)
+  11514             1
+  11515         """
+&gt; 11516         NumberField_absolute.__init__(self, polynomial, name=name, check=check,
+  11517                                       embedding=embedding, latex_name=latex_name,
+  11518                                       assume_disc_small=assume_disc_small, maximize_at_primes=maximize_at_primes, structure=structure)
+
+/usr/lib/python3.9/site-packages/sage/rings/number_field/number_field.py in __init__(self, polynomial, name, latex_name, check, embedding, assume_disc_small, maximize_at_primes, structure)
+   7550             sage: TestSuite(K).run()
+   7551         """
+-&gt; 7552         NumberField_generic.__init__(self, polynomial, name, latex_name, check, embedding,
+   7553                                      assume_disc_small=assume_disc_small, maximize_at_primes=maximize_at_primes, structure=structure)
+   7554         self._element_class = number_field_element.NumberFieldElement_absolute
+
+/usr/lib/python3.9/site-packages/sage/rings/number_field/number_field.py in __init__(self, polynomial, name, latex_name, check, embedding, category, assume_disc_small, maximize_at_primes, structure)
+   1420         if check:
+   1421             if not polynomial.parent().base_ring() == QQ:
+-&gt; 1422                 raise TypeError("polynomial must be defined over rational field")
+   1423             if not polynomial.is_irreducible():
+   1424                 raise ValueError("defining polynomial (%s) must be irreducible"%polynomial)
+
+TypeError: polynomial must be defined over rational field
+</pre>
+
+
+
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python">load(<span style="color: #4f894c;">"worksheet.sage"</span>)
+F.&lt;a&gt; = NumberField(x^2-13)
+<span style="color: #cb9aad;">O</span> = F.order(1,(1+11*a)/2)
+<span style="color: #3b6ea8;">print</span>(O.gens(), <span style="color: #4f894c;">"\n index:"</span>, conductor(O), <span style="color: #4f894c;">"\n narrow class group:"</span>, narrow_class_group(O))
+<span style="color: #b1b1b1;"># </span><span style="color: #b1b1b1;">pari("bnrinit(bnfinit(x^2-13),[{},{}],1).cyc".format(11, [1,1]))</span>
+</pre>
+</div>
+
+<pre class="example" id="orgb74bfa5">
+
+TypeErrorTraceback (most recent call last)
+&lt;ipython-input-443-0e1d09e5529f&gt; in &lt;module&gt;
+      1 load("worksheet.sage")
+----&gt; 2 F = NumberField(x**Integer(2)-Integer(13), names=('a',)); (a,) = F._first_ngens(1)
+      3 O = F.order(Integer(1),(Integer(1)+Integer(11)*a)/Integer(2))
+      4 print(O.gens(), "\n index:", conductor(O), "\n narrow class group:", narrow_class_group(O))
+      5 # pari("bnrinit(bnfinit(x^2-13),[{},{}],1).cyc".format(11, [1,1]))
+
+/usr/lib/python3.9/site-packages/sage/rings/number_field/number_field.py in NumberField(polynomial, name, check, names, embedding, latex_name, assume_disc_small, maximize_at_primes, structure, latex_names, **kwds)
+    566         return NumberFieldTower(polynomial, names=name, check=check, embeddings=embedding, latex_names=latex_name, assume_disc_small=assume_disc_small, maximize_at_primes=maximize_at_primes, structures=structure)
+    567 
+--&gt; 568     return NumberField_version2(polynomial=polynomial, name=name, check=check, embedding=embedding, latex_name=latex_name, assume_disc_small=assume_disc_small, maximize_at_primes=maximize_at_primes, structure=structure)
+    569 
+    570 class NumberFieldFactory(UniqueFactory):
+
+/usr/lib/python3.9/site-packages/sage/structure/factory.pyx in sage.structure.factory.UniqueFactory.__call__ (build/cythonized/sage/structure/factory.c:2265)()
+    367         key, kwds = self.create_key_and_extra_args(*args, **kwds)
+    368         version = self.get_version(sage_version)
+--&gt; 369         return self.get_object(version, key, kwds)
+    370 
+    371     cpdef get_object(self, version, key, extra_args):
+
+/usr/lib/python3.9/site-packages/sage/structure/factory.pyx in sage.structure.factory.UniqueFactory.get_object (build/cythonized/sage/structure/factory.c:2659)()
+    410         except KeyError:
+    411             pass
+--&gt; 412         obj = self.create_object(version, key, **extra_args)
+    413         self._cache[version, cache_key] = obj
+    414         try:
+
+/usr/lib/python3.9/site-packages/sage/rings/number_field/number_field.py in create_object(self, version, key, check)
+    699                                         structure=structure)
+    700         if polynomial.degree() == 2:
+--&gt; 701             return NumberField_quadratic(polynomial, name, latex_name, check, embedding, assume_disc_small=assume_disc_small, maximize_at_primes=maximize_at_primes, structure=structure)
+    702         else:
+    703             return NumberField_absolute(polynomial, name, latex_name, check, embedding, assume_disc_small=assume_disc_small, maximize_at_primes=maximize_at_primes, structure=structure)
+
+/usr/lib/python3.9/site-packages/sage/rings/number_field/number_field.py in __init__(self, polynomial, name, latex_name, check, embedding, assume_disc_small, maximize_at_primes, structure)
+  11514             1
+  11515         """
+&gt; 11516         NumberField_absolute.__init__(self, polynomial, name=name, check=check,
+  11517                                       embedding=embedding, latex_name=latex_name,
+  11518                                       assume_disc_small=assume_disc_small, maximize_at_primes=maximize_at_primes, structure=structure)
+
+/usr/lib/python3.9/site-packages/sage/rings/number_field/number_field.py in __init__(self, polynomial, name, latex_name, check, embedding, assume_disc_small, maximize_at_primes, structure)
+   7550             sage: TestSuite(K).run()
+   7551         """
+-&gt; 7552         NumberField_generic.__init__(self, polynomial, name, latex_name, check, embedding,
+   7553                                      assume_disc_small=assume_disc_small, maximize_at_primes=maximize_at_primes, structure=structure)
+   7554         self._element_class = number_field_element.NumberFieldElement_absolute
+
+/usr/lib/python3.9/site-packages/sage/rings/number_field/number_field.py in __init__(self, polynomial, name, latex_name, check, embedding, category, assume_disc_small, maximize_at_primes, structure)
+   1420         if check:
+   1421             if not polynomial.parent().base_ring() == QQ:
+-&gt; 1422                 raise TypeError("polynomial must be defined over rational field")
+   1423             if not polynomial.is_irreducible():
+   1424                 raise ValueError("defining polynomial (%s) must be irreducible"%polynomial)
+
+TypeError: polynomial must be defined over rational field
+</pre>
+
+
+<p>
+This is weird, cf example 3.3 and magma:
+R&lt;x&gt; := PolynomialRing(Integers());
+F := NumberField(x<sup>2</sup>-13);
+M := MaximalOrder(F);
+O := sub&lt; M |1, 11*M.2&gt;;
+Index(M,O);
+Discriminant(O);
+RingClassGroup(O);
+D := Divisor(11 *M)+Divisor(RealPlaces(F)[1])+Divisor(RealPlaces(F)[2]);
+RayClassGroup(D); 
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python">load(<span style="color: #4f894c;">"worksheet.sage"</span>)
+F.&lt;a&gt; = NumberField(x^2-321)
+<span style="color: #cb9aad;">O</span> = F.maximal_order()
+<span style="color: #3b6ea8;">print</span>(O.gens(), <span style="color: #4f894c;">"\n index:"</span>, conductor(O), <span style="color: #4f894c;">"\n narrow class group:"</span>, narrow_class_group(O))
+</pre>
+</div>
+
+<pre class="example" id="org711b013">
+
+TypeErrorTraceback (most recent call last)
+&lt;ipython-input-444-c9ec1bd7c6ab&gt; in &lt;module&gt;
+      1 load("worksheet.sage")
+----&gt; 2 F = NumberField(x**Integer(2)-Integer(321), names=('a',)); (a,) = F._first_ngens(1)
+      3 O = F.maximal_order()
+      4 print(O.gens(), "\n index:", conductor(O), "\n narrow class group:", narrow_class_group(O))
+
+/usr/lib/python3.9/site-packages/sage/rings/number_field/number_field.py in NumberField(polynomial, name, check, names, embedding, latex_name, assume_disc_small, maximize_at_primes, structure, latex_names, **kwds)
+    566         return NumberFieldTower(polynomial, names=name, check=check, embeddings=embedding, latex_names=latex_name, assume_disc_small=assume_disc_small, maximize_at_primes=maximize_at_primes, structures=structure)
+    567 
+--&gt; 568     return NumberField_version2(polynomial=polynomial, name=name, check=check, embedding=embedding, latex_name=latex_name, assume_disc_small=assume_disc_small, maximize_at_primes=maximize_at_primes, structure=structure)
+    569 
+    570 class NumberFieldFactory(UniqueFactory):
+
+/usr/lib/python3.9/site-packages/sage/structure/factory.pyx in sage.structure.factory.UniqueFactory.__call__ (build/cythonized/sage/structure/factory.c:2265)()
+    367         key, kwds = self.create_key_and_extra_args(*args, **kwds)
+    368         version = self.get_version(sage_version)
+--&gt; 369         return self.get_object(version, key, kwds)
+    370 
+    371     cpdef get_object(self, version, key, extra_args):
+
+/usr/lib/python3.9/site-packages/sage/structure/factory.pyx in sage.structure.factory.UniqueFactory.get_object (build/cythonized/sage/structure/factory.c:2659)()
+    410         except KeyError:
+    411             pass
+--&gt; 412         obj = self.create_object(version, key, **extra_args)
+    413         self._cache[version, cache_key] = obj
+    414         try:
+
+/usr/lib/python3.9/site-packages/sage/rings/number_field/number_field.py in create_object(self, version, key, check)
+    699                                         structure=structure)
+    700         if polynomial.degree() == 2:
+--&gt; 701             return NumberField_quadratic(polynomial, name, latex_name, check, embedding, assume_disc_small=assume_disc_small, maximize_at_primes=maximize_at_primes, structure=structure)
+    702         else:
+    703             return NumberField_absolute(polynomial, name, latex_name, check, embedding, assume_disc_small=assume_disc_small, maximize_at_primes=maximize_at_primes, structure=structure)
+
+/usr/lib/python3.9/site-packages/sage/rings/number_field/number_field.py in __init__(self, polynomial, name, latex_name, check, embedding, assume_disc_small, maximize_at_primes, structure)
+  11514             1
+  11515         """
+&gt; 11516         NumberField_absolute.__init__(self, polynomial, name=name, check=check,
+  11517                                       embedding=embedding, latex_name=latex_name,
+  11518                                       assume_disc_small=assume_disc_small, maximize_at_primes=maximize_at_primes, structure=structure)
+
+/usr/lib/python3.9/site-packages/sage/rings/number_field/number_field.py in __init__(self, polynomial, name, latex_name, check, embedding, assume_disc_small, maximize_at_primes, structure)
+   7550             sage: TestSuite(K).run()
+   7551         """
+-&gt; 7552         NumberField_generic.__init__(self, polynomial, name, latex_name, check, embedding,
+   7553                                      assume_disc_small=assume_disc_small, maximize_at_primes=maximize_at_primes, structure=structure)
+   7554         self._element_class = number_field_element.NumberFieldElement_absolute
+
+/usr/lib/python3.9/site-packages/sage/rings/number_field/number_field.py in __init__(self, polynomial, name, latex_name, check, embedding, category, assume_disc_small, maximize_at_primes, structure)
+   1420         if check:
+   1421             if not polynomial.parent().base_ring() == QQ:
+-&gt; 1422                 raise TypeError("polynomial must be defined over rational field")
+   1423             if not polynomial.is_irreducible():
+   1424                 raise ValueError("defining polynomial (%s) must be irreducible"%polynomial)
+
+TypeError: polynomial must be defined over rational field
+</pre>
+
+<p>
+Checks out. 
+</p>
+
+
+<p>
+Finally, let&rsquo;s check if it works with higher number fields:
+</p>
+<div class="org-src-container">
+<pre class="src src-jupyter-python">load(<span style="color: #4f894c;">"worksheet.sage"</span>)
+F.&lt;a&gt; = NumberField(x^3 -3*x-1)
+<span style="color: #cb9aad;">M</span> = F.maximal_order()
+<span style="color: #b1b1b1;"># </span><span style="color: #b1b1b1;">F.order(5*M)</span>
+<span style="color: #cb9aad;">P</span> = x^3 -3*x-1
+<span style="color: #b1b1b1;"># </span><span style="color: #b1b1b1;">O = F.order(1,5*a,5*a^2)</span>
+pari(<span style="color: #4f894c;">"bnrinit(bnfinit({}),[{},{}],1).cyc"</span>.<span style="color: #29838d;">format</span>(P, 5, [0 <span style="color: #3b6ea8;">for</span> n <span style="color: #3b6ea8;">in</span> [1..3]]))
+<span style="color: #b1b1b1;"># </span><span style="color: #b1b1b1;">print(O.gens(), "\n index:", conductor(O), "\n narrow class group:", narrow_class_group(O))</span>
+</pre>
+</div>
+
+<pre class="example" id="org6acc7a3">
+
+TypeErrorTraceback (most recent call last)
+&lt;ipython-input-445-6867fa5c8127&gt; in &lt;module&gt;
+      1 load("worksheet.sage")
+----&gt; 2 F = NumberField(x**Integer(3) -Integer(3)*x-Integer(1), names=('a',)); (a,) = F._first_ngens(1)
+      3 M = F.maximal_order()
+      4 # F.order(5*M)
+      5 P = x**Integer(3) -Integer(3)*x-Integer(1)
+
+/usr/lib/python3.9/site-packages/sage/rings/number_field/number_field.py in NumberField(polynomial, name, check, names, embedding, latex_name, assume_disc_small, maximize_at_primes, structure, latex_names, **kwds)
+    566         return NumberFieldTower(polynomial, names=name, check=check, embeddings=embedding, latex_names=latex_name, assume_disc_small=assume_disc_small, maximize_at_primes=maximize_at_primes, structures=structure)
+    567 
+--&gt; 568     return NumberField_version2(polynomial=polynomial, name=name, check=check, embedding=embedding, latex_name=latex_name, assume_disc_small=assume_disc_small, maximize_at_primes=maximize_at_primes, structure=structure)
+    569 
+    570 class NumberFieldFactory(UniqueFactory):
+
+/usr/lib/python3.9/site-packages/sage/structure/factory.pyx in sage.structure.factory.UniqueFactory.__call__ (build/cythonized/sage/structure/factory.c:2265)()
+    367         key, kwds = self.create_key_and_extra_args(*args, **kwds)
+    368         version = self.get_version(sage_version)
+--&gt; 369         return self.get_object(version, key, kwds)
+    370 
+    371     cpdef get_object(self, version, key, extra_args):
+
+/usr/lib/python3.9/site-packages/sage/structure/factory.pyx in sage.structure.factory.UniqueFactory.get_object (build/cythonized/sage/structure/factory.c:2659)()
+    410         except KeyError:
+    411             pass
+--&gt; 412         obj = self.create_object(version, key, **extra_args)
+    413         self._cache[version, cache_key] = obj
+    414         try:
+
+/usr/lib/python3.9/site-packages/sage/rings/number_field/number_field.py in create_object(self, version, key, check)
+    701             return NumberField_quadratic(polynomial, name, latex_name, check, embedding, assume_disc_small=assume_disc_small, maximize_at_primes=maximize_at_primes, structure=structure)
+    702         else:
+--&gt; 703             return NumberField_absolute(polynomial, name, latex_name, check, embedding, assume_disc_small=assume_disc_small, maximize_at_primes=maximize_at_primes, structure=structure)
+    704 
+    705 NumberField_version2 = NumberFieldFactory("sage.rings.number_field.number_field.NumberField_version2")
+
+/usr/lib/python3.9/site-packages/sage/rings/number_field/number_field.py in __init__(self, polynomial, name, latex_name, check, embedding, assume_disc_small, maximize_at_primes, structure)
+   7550             sage: TestSuite(K).run()
+   7551         """
+-&gt; 7552         NumberField_generic.__init__(self, polynomial, name, latex_name, check, embedding,
+   7553                                      assume_disc_small=assume_disc_small, maximize_at_primes=maximize_at_primes, structure=structure)
+   7554         self._element_class = number_field_element.NumberFieldElement_absolute
+
+/usr/lib/python3.9/site-packages/sage/rings/number_field/number_field.py in __init__(self, polynomial, name, latex_name, check, embedding, category, assume_disc_small, maximize_at_primes, structure)
+   1420         if check:
+   1421             if not polynomial.parent().base_ring() == QQ:
+-&gt; 1422                 raise TypeError("polynomial must be defined over rational field")
+   1423             if not polynomial.is_irreducible():
+   1424                 raise ValueError("defining polynomial (%s) must be irreducible"%polynomial)
+
+TypeError: polynomial must be defined over rational field
+</pre>
+</div>
+
+<div id="outline-container-org4363e72" class="outline-3">
+<h3 id="org4363e72"><span class="section-number-3">4.1.</span> Arbitrary ideals:</h3>
+<div class="outline-text-3" id="text-4-1">
+<div class="org-src-container">
+<pre class="src src-jupyter-python">
+load(<span style="color: #4f894c;">"worksheet.sage"</span>)
+F.&lt;a&gt; = NumberField(x^3 -3*x-1)
+<span style="color: #b1b1b1;"># </span><span style="color: #b1b1b1;">P = F.pari_polynomial()</span>
+<span style="color: #cb9aad;">m</span> = 7
+mod_narrow_class_group(F,m)
+</pre>
+</div>
+
+<pre class="example" id="org9723745">
+
+TypeErrorTraceback (most recent call last)
+&lt;ipython-input-446-d4b3bae76d66&gt; in &lt;module&gt;
+      1 load("worksheet.sage")
+----&gt; 2 F = NumberField(x**Integer(3) -Integer(3)*x-Integer(1), names=('a',)); (a,) = F._first_ngens(1)
+      3 # P = F.pari_polynomial()
+      4 m = Integer(7)
+      5 mod_narrow_class_group(F,m)
+
+/usr/lib/python3.9/site-packages/sage/rings/number_field/number_field.py in NumberField(polynomial, name, check, names, embedding, latex_name, assume_disc_small, maximize_at_primes, structure, latex_names, **kwds)
+    566         return NumberFieldTower(polynomial, names=name, check=check, embeddings=embedding, latex_names=latex_name, assume_disc_small=assume_disc_small, maximize_at_primes=maximize_at_primes, structures=structure)
+    567 
+--&gt; 568     return NumberField_version2(polynomial=polynomial, name=name, check=check, embedding=embedding, latex_name=latex_name, assume_disc_small=assume_disc_small, maximize_at_primes=maximize_at_primes, structure=structure)
+    569 
+    570 class NumberFieldFactory(UniqueFactory):
+
+/usr/lib/python3.9/site-packages/sage/structure/factory.pyx in sage.structure.factory.UniqueFactory.__call__ (build/cythonized/sage/structure/factory.c:2265)()
+    367         key, kwds = self.create_key_and_extra_args(*args, **kwds)
+    368         version = self.get_version(sage_version)
+--&gt; 369         return self.get_object(version, key, kwds)
+    370 
+    371     cpdef get_object(self, version, key, extra_args):
+
+/usr/lib/python3.9/site-packages/sage/structure/factory.pyx in sage.structure.factory.UniqueFactory.get_object (build/cythonized/sage/structure/factory.c:2659)()
+    410         except KeyError:
+    411             pass
+--&gt; 412         obj = self.create_object(version, key, **extra_args)
+    413         self._cache[version, cache_key] = obj
+    414         try:
+
+/usr/lib/python3.9/site-packages/sage/rings/number_field/number_field.py in create_object(self, version, key, check)
+    701             return NumberField_quadratic(polynomial, name, latex_name, check, embedding, assume_disc_small=assume_disc_small, maximize_at_primes=maximize_at_primes, structure=structure)
+    702         else:
+--&gt; 703             return NumberField_absolute(polynomial, name, latex_name, check, embedding, assume_disc_small=assume_disc_small, maximize_at_primes=maximize_at_primes, structure=structure)
+    704 
+    705 NumberField_version2 = NumberFieldFactory("sage.rings.number_field.number_field.NumberField_version2")
+
+/usr/lib/python3.9/site-packages/sage/rings/number_field/number_field.py in __init__(self, polynomial, name, latex_name, check, embedding, assume_disc_small, maximize_at_primes, structure)
+   7550             sage: TestSuite(K).run()
+   7551         """
+-&gt; 7552         NumberField_generic.__init__(self, polynomial, name, latex_name, check, embedding,
+   7553                                      assume_disc_small=assume_disc_small, maximize_at_primes=maximize_at_primes, structure=structure)
+   7554         self._element_class = number_field_element.NumberFieldElement_absolute
+
+/usr/lib/python3.9/site-packages/sage/rings/number_field/number_field.py in __init__(self, polynomial, name, latex_name, check, embedding, category, assume_disc_small, maximize_at_primes, structure)
+   1420         if check:
+   1421             if not polynomial.parent().base_ring() == QQ:
+-&gt; 1422                 raise TypeError("polynomial must be defined over rational field")
+   1423             if not polynomial.is_irreducible():
+   1424                 raise ValueError("defining polynomial (%s) must be irreducible"%polynomial)
+
+TypeError: polynomial must be defined over rational field
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf5a3200" class="outline-2">
+<h2 id="orgf5a3200"><span class="section-number-2">5.</span> Trivial character</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+Let&rsquo;s implement the algorithm without worrying about character, for now.
+</p>
+<div class="org-src-container">
+<pre class="src src-jupyter-python">F.&lt;a&gt; = NumberField(x^2-17)
+<span style="color: #cb9aad;">d</span> = F.degree()
+<span style="color: #3b6ea8;">assert</span> d == 2
+<span style="color: #b1b1b1;">#</span><span style="color: #b1b1b1;">M = 1</span>
+k0 = 2
+p = 13
+deltam = ceil((p-1)/(p-2))
+
+kj = [k0+j*(p-1) <span style="color: #3b6ea8;">for</span> j <span style="color: #3b6ea8;">in</span> [0..deltam]]  <span style="color: #b1b1b1;"># </span><span style="color: #b1b1b1;">note k0 = 2 as above</span>
+
+R.&lt;q&gt; = PowerSeriesRing(QQ) 
+S = ModularForms(weight=d*kj[deltam]).sturm_bound()
+Mdkj = [ModularForms(weight=(d*kj[j])).q_expansion_basis(prec=S) <span style="color: #3b6ea8;">for</span> j <span style="color: #3b6ea8;">in</span>
+<span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   [0..deltam]]
+<span style="color: #3b6ea8;">print</span>(<span style="color: #29838d;">len</span>(Mdkj))
+<span style="color: #3b6ea8;">for</span> m <span style="color: #3b6ea8;">in</span> Mdkj:
+<span style="background-color: #eeeeee;"> </span>   <span style="color: #3b6ea8;">print</span>(<span style="color: #29838d;">len</span>(m))
+</pre>
+</div>
+
+<pre class="example" id="org7e42232">
+
+TypeErrorTraceback (most recent call last)
+&lt;ipython-input-447-f9204daaa77e&gt; in &lt;module&gt;
+----&gt; 1 F = NumberField(x**Integer(2)-Integer(17), names=('a',)); (a,) = F._first_ngens(1)
+      2 d = F.degree()
+      3 assert d == Integer(2)
+      4 #M = 1
+      5 k0 = Integer(2)
+
+/usr/lib/python3.9/site-packages/sage/rings/number_field/number_field.py in NumberField(polynomial, name, check, names, embedding, latex_name, assume_disc_small, maximize_at_primes, structure, latex_names, **kwds)
+    566         return NumberFieldTower(polynomial, names=name, check=check, embeddings=embedding, latex_names=latex_name, assume_disc_small=assume_disc_small, maximize_at_primes=maximize_at_primes, structures=structure)
+    567 
+--&gt; 568     return NumberField_version2(polynomial=polynomial, name=name, check=check, embedding=embedding, latex_name=latex_name, assume_disc_small=assume_disc_small, maximize_at_primes=maximize_at_primes, structure=structure)
+    569 
+    570 class NumberFieldFactory(UniqueFactory):
+
+/usr/lib/python3.9/site-packages/sage/structure/factory.pyx in sage.structure.factory.UniqueFactory.__call__ (build/cythonized/sage/structure/factory.c:2265)()
+    367         key, kwds = self.create_key_and_extra_args(*args, **kwds)
+    368         version = self.get_version(sage_version)
+--&gt; 369         return self.get_object(version, key, kwds)
+    370 
+    371     cpdef get_object(self, version, key, extra_args):
+
+/usr/lib/python3.9/site-packages/sage/structure/factory.pyx in sage.structure.factory.UniqueFactory.get_object (build/cythonized/sage/structure/factory.c:2659)()
+    410         except KeyError:
+    411             pass
+--&gt; 412         obj = self.create_object(version, key, **extra_args)
+    413         self._cache[version, cache_key] = obj
+    414         try:
+
+/usr/lib/python3.9/site-packages/sage/rings/number_field/number_field.py in create_object(self, version, key, check)
+    699                                         structure=structure)
+    700         if polynomial.degree() == 2:
+--&gt; 701             return NumberField_quadratic(polynomial, name, latex_name, check, embedding, assume_disc_small=assume_disc_small, maximize_at_primes=maximize_at_primes, structure=structure)
+    702         else:
+    703             return NumberField_absolute(polynomial, name, latex_name, check, embedding, assume_disc_small=assume_disc_small, maximize_at_primes=maximize_at_primes, structure=structure)
+
+/usr/lib/python3.9/site-packages/sage/rings/number_field/number_field.py in __init__(self, polynomial, name, latex_name, check, embedding, assume_disc_small, maximize_at_primes, structure)
+  11514             1
+  11515         """
+&gt; 11516         NumberField_absolute.__init__(self, polynomial, name=name, check=check,
+  11517                                       embedding=embedding, latex_name=latex_name,
+  11518                                       assume_disc_small=assume_disc_small, maximize_at_primes=maximize_at_primes, structure=structure)
+
+/usr/lib/python3.9/site-packages/sage/rings/number_field/number_field.py in __init__(self, polynomial, name, latex_name, check, embedding, assume_disc_small, maximize_at_primes, structure)
+   7550             sage: TestSuite(K).run()
+   7551         """
+-&gt; 7552         NumberField_generic.__init__(self, polynomial, name, latex_name, check, embedding,
+   7553                                      assume_disc_small=assume_disc_small, maximize_at_primes=maximize_at_primes, structure=structure)
+   7554         self._element_class = number_field_element.NumberFieldElement_absolute
+
+/usr/lib/python3.9/site-packages/sage/rings/number_field/number_field.py in __init__(self, polynomial, name, latex_name, check, embedding, category, assume_disc_small, maximize_at_primes, structure)
+   1420         if check:
+   1421             if not polynomial.parent().base_ring() == QQ:
+-&gt; 1422                 raise TypeError("polynomial must be defined over rational field")
+   1423             if not polynomial.is_irreducible():
+   1424                 raise ValueError("defining polynomial (%s) must be irreducible"%polynomial)
+
+TypeError: polynomial must be defined over rational field
+</pre>
+<div class="org-src-container">
+<pre class="src src-jupyter-python">load(<span style="color: #4f894c;">'worksheet.sage'</span>)
+<span style="color: #cb9aad;">Deltaj</span> = []
+<span style="color: #3b6ea8;">for</span> j <span style="color: #3b6ea8;">in</span> [0..deltam]: 
+<span style="background-color: #eeeeee;"> </span>   Deltaj.append(2^d*<span style="color: #29838d;">sum</span>(q^n * <span style="color: #29838d;">sum</span>(A.norm()^(kj[j]-1) <span style="color: #3b6ea8;">for</span> nu <span style="color: #3b6ea8;">in</span>
+<span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span> tp_elts_of_trace_n(F,n) <span style="color: #3b6ea8;">for</span> A <span style="color: #3b6ea8;">in</span>
+<span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span> divisors(nu*(F.different()))
+<span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   <span style="background-color: #eeeeee;"> </span>   ) <span style="color: #3b6ea8;">for</span> n <span style="color: #3b6ea8;">in</span> [1..S-1]))
+
+Deltaj
+
+<span style="color: #b1b1b1;"># </span><span style="color: #b1b1b1;"># j = 1:</span>
+<span style="color: #b1b1b1;"># </span><span style="color: #b1b1b1;">Delta1 = 0</span>
+<span style="color: #b1b1b1;"># </span><span style="color: #b1b1b1;">for n in [1..S-1]:</span>
+<span style="color: #b1b1b1;">#     </span><span style="color: #b1b1b1;">for nu in tp_elts_of_trace_n(F, n):</span>
+<span style="color: #b1b1b1;">#         </span><span style="color: #b1b1b1;">for A in divisors(nu*(F.different())):</span>
+<span style="color: #b1b1b1;">#             </span><span style="color: #b1b1b1;">Delta1+= 2^d * q^n * A.norm()^(kj[1]-1)</span>
+<span style="color: #b1b1b1;"># </span><span style="color: #b1b1b1;">assert Delta1 == Deltaj[1]</span>
+
+<span style="color: #b1b1b1;"># </span><span style="color: #b1b1b1;">[A.norm() for A in divisors(tp_elts_of_trace_n(F,3)[-1]*F.different())]</span>
+</pre>
+</div>
+
+<pre class="example" id="org4e26704">
+
+TypeErrorTraceback (most recent call last)
+&lt;ipython-input-448-f0b0d28d5c97&gt; in &lt;module&gt;
+      5                                   tp_elts_of_trace_n(F,n) for A in
+      6                                   divisors(nu*(F.different()))
+----&gt; 7                         ) for n in (ellipsis_range(Integer(1),Ellipsis,S-Integer(1)))))
+      8 
+      9 Deltaj
+
+/usr/lib/python3.9/site-packages/sage/rings/integer.pyx in sage.rings.integer.Integer.__sub__ (build/cythonized/sage/rings/integer.c:12943)()
+   1872             return y
+   1873 
+-&gt; 1874         return coercion_model.bin_op(left, right, operator.sub)
+   1875 
+   1876     cpdef _sub_(self, right):
+
+/usr/lib/python3.9/site-packages/sage/structure/coerce.pyx in sage.structure.coerce.CoercionModel.bin_op (build/cythonized/sage/structure/coerce.c:11710)()
+   1246         # We should really include the underlying error.
+   1247         # This causes so much headache.
+-&gt; 1248         raise bin_op_exception(op, x, y)
+   1249 
+   1250     cpdef canonical_coercion(self, x, y):
+
+TypeError: unsupported operand parent(s) for -: '&lt;class 'sage.rings.polynomial.polynomial_ring.PolynomialRing_integral_domain_with_category'&gt;' and 'Integer Ring'
+</pre>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python">load(<span style="color: #4f894c;">"worksheet.sage"</span>)
+<span style="color: #cb9aad;">DeltaList</span> = []
+<span style="color: #3b6ea8;">for</span> j <span style="color: #3b6ea8;">in</span> [0..deltam]:
+<span style="background-color: #eeeeee;"> </span>   DeltaList.append(find_const_term(Mdkj[j],Deltaj[j]) + Deltaj[j])
+DeltaList
+
+R.&lt;q&gt; = PolynomialRing(QQ)
+<span style="color: #b1b1b1;"># </span><span style="color: #b1b1b1;"># F.zeta_function()(-1)</span>
+<span style="color: #b1b1b1;"># </span><span style="color: #b1b1b1;">L = PolynomialRing(QQ,'x')</span>
+S.&lt;s&gt; = PolynomialRing(R)
+<span style="color: #cb9aad;">points</span> = [(1-kj[j], R(DeltaList[j])) <span style="color: #3b6ea8;">for</span> j <span style="color: #3b6ea8;">in</span> [0..deltam]]
+<span style="color: #b1b1b1;"># </span><span style="color: #b1b1b1;">L = [(1,0.05),(0.1,0.11),(0.2,0.26),(0.3,0.35),(0.4,0.49),(0.5,0.67)]</span>
+<span style="color: #b1b1b1;"># </span><span style="color: #b1b1b1;">L = [(1,6),(2,9),(3,2),(4,5)]</span>
+forward_diff_poln(points)
+<span style="color: #b1b1b1;"># </span><span style="color: #b1b1b1;">DeltaList</span>
+<span style="color: #b1b1b1;"># </span><span style="color: #b1b1b1;">[(1-kj[j], R(DeltaList[j])) for j in [0..deltam]]</span>
+</pre>
+</div>
+
+<pre class="example">
+
+IndexErrorTraceback (most recent call last)
+&lt;ipython-input-449-ce791b45a6f2&gt; in &lt;module&gt;
+      2 DeltaList = []
+      3 for j in (ellipsis_range(Integer(0),Ellipsis,deltam)):
+----&gt; 4     DeltaList.append(find_const_term(Mdkj[j],Deltaj[j]) + Deltaj[j])
+      5 DeltaList
+      6 
+
+IndexError: list index out of range
+</pre>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Håvard Damm-Johnsen</p>
+<p class="date">Created: 2021-07-17 Sat 13:11</p>
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

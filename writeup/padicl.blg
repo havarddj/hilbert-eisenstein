@@ -1,0 +1,46 @@
+This is BibTeX, Version 0.99d (TeX Live 2021/Arch Linux)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: padicl.aux
+The style file: alpha.bst
+Database file #1: /home/havard/Documents/bibliography/references.bib
+You've used 10 entries,
+            2543 wiz_defined-function locations,
+            628 strings with 5991 characters,
+and the built_in function-call counts, 3590 in all, are:
+= -- 359
+> -- 141
+< -- 7
++ -- 44
+- -- 43
+* -- 259
+:= -- 607
+add.period$ -- 32
+call.type$ -- 10
+change.case$ -- 53
+chr.to.int$ -- 10
+cite$ -- 10
+duplicate$ -- 153
+empty$ -- 276
+format.name$ -- 58
+if$ -- 725
+int.to.chr$ -- 1
+int.to.str$ -- 0
+missing$ -- 14
+newline$ -- 53
+num.names$ -- 30
+pop$ -- 49
+preamble$ -- 1
+purify$ -- 66
+quote$ -- 0
+skip$ -- 115
+stack$ -- 0
+substring$ -- 198
+swap$ -- 15
+text.length$ -- 7
+text.prefix$ -- 5
+top$ -- 0
+type$ -- 64
+warning$ -- 0
+while$ -- 36
+width$ -- 14
+write$ -- 135

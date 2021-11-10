@@ -1,0 +1,24 @@
+;; RefTeX parse info file
+;; File: /home/havard/Projects/HilbertEisenstein/yrant/slides.tex
+;; User: havard (Håvard Damm-Johnsen)
+
+(set reftex-docstruct-symbol '(
+
+
+(xr nil "\\\\\\\\\\\\")
+
+(index-tags)
+
+(is-multi nil)
+
+(bibview-cache ("lauder2010" . "Lauder & Vonk 2010, {{COMPUTING}} P {{ADIC L}} {{FUNCTIONS, 21"))
+
+(master-dir . "/home/havard/Projects/HilbertEisenstein/yrant/")
+
+(label-numbers)
+
+(bof "/home/havard/Projects/HilbertEisenstein/yrant/slides.tex")
+
+(eof "/home/havard/Projects/HilbertEisenstein/yrant/slides.tex")
+))
+

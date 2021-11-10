@@ -1,0 +1,20 @@
+\@ifundefined {etoctocstyle}{\let \etoc@startlocaltoc \@gobble \let \etoc@settocdepth \@gobble \let \etoc@depthtag \@gobble \let \etoc@setlocaltop \@gobble }{}
+\etoc@startlocaltoc {1}
+\contentsline {section}{\numberline {1}Introduction}{1}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Historical background}{2}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Overview}{3}{subsection.1.2}%
+\contentsline {section}{\numberline {2}Theory}{3}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Hecke characters}{3}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}$L$-functions of totally real fields}{6}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}$p$-adic interpolation}{7}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}The algorithm}{7}{subsection.2.4}%
+\contentsline {subsection}{\numberline {2.5}Lambda-invariants}{9}{subsection.2.5}%
+\contentsline {subsubsection}{\numberline {2.5.1}A quick summary of EJV}{9}{subsubsection.2.5.1}%
+\contentsline {subsubsection}{\numberline {2.5.2}Mention results of Santato?}{9}{subsubsection.2.5.2}%
+\contentsline {section}{\numberline {3}Implementation}{10}{section.3}%
+\contentsline {subsection}{\numberline {3.1}An algorithm for quadratic fields}{10}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}The quadratic forms method}{10}{subsection.3.2}%
+\contentsline {subsubsection}{\numberline {3.2.1}Computing sets of nearly reduced forms}{10}{subsubsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.3}Optimisations of the naïve algorithm}{12}{subsection.3.3}%
+\contentsline {section}{\numberline {4}Future investigations}{12}{section.4}%
+\contentsline {section}{Bibliography}{12}{section*.1}%

@@ -1,0 +1,32 @@
+;; RefTeX parse info file
+;; File: /home/havard/Projects/HilbertEisenstein/JNT/padicL_slides.tex
+;; User: havard (Håvard Damm-Johnsen)
+
+(set reftex-docstruct-symbol '(
+
+
+(xr nil "\\\\\\\\\\\\")
+
+(index-tags)
+
+(is-multi nil)
+
+(bibview-cache)
+
+(master-dir . "/home/havard/Projects/HilbertEisenstein/JNT/")
+
+(label-numbers)
+
+(bof "/home/havard/Projects/HilbertEisenstein/JNT/padicL_slides.tex")
+
+(toc "toc" "    1 $L$-functions" "/home/havard/Projects/HilbertEisenstein/JNT/padicL_slides.tex" nil 2 "1" "\\section{$L$-functions}" 5260)
+
+(toc "toc" "    2 $p$-adic $L$-functions" "/home/havard/Projects/HilbertEisenstein/JNT/padicL_slides.tex" nil 2 "2" "\\section{$p$-adic $L$-functions}" 10724)
+
+(toc "toc" "    3 Algorithm" "/home/havard/Projects/HilbertEisenstein/JNT/padicL_slides.tex" nil 2 "3" "\\section{Algorithm}" 14680)
+
+("eq:2" "e" " " "/home/havard/Projects/HilbertEisenstein/JNT/padicL_slides.tex" nil)
+
+(eof "/home/havard/Projects/HilbertEisenstein/JNT/padicL_slides.tex")
+))
+

@@ -1,0 +1,15 @@
+load "Discriminants.m";
+load "DiagonalRestrictions.m";
+load "pAdicL.m";
+
+function getLambda(F,p : m :=10)
+    P,Q := pAdicLfunction(F,p,m);
+    lambda := 0;
+    L := Coefficients(Q);
+    n := 1;		
+    while((ZZ!L[n] mod p) eq 0) do
+	lambda := lambda + 1;
+	n := n + 1;
+    end while;
+    return lambda;
+end function;

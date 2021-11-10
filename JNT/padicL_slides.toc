@@ -1,0 +1,3 @@
+\beamer@sectionintoc {1}{$L$-functions}{7}{0}{1}
+\beamer@sectionintoc {2}{$p$-adic $L$-functions}{43}{0}{2}
+\beamer@sectionintoc {3}{Algorithm}{67}{0}{3}

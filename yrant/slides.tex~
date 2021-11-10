@@ -1,0 +1,395 @@
+\documentclass[10pt]{beamer}
+\synctex=1
+\usepackage{amsmath,amsthm, amssymb, amsfonts, mathrsfs}
+% \usepackage[pagebackref=true]{hyperref}
+\usetheme[progressbar=frametitle,block=fill]{metropolis}
+\metroset{block=fill}
+\setbeamercolor{progress bar in head}{fg=red}
+\usepackage{mathabx,epsfig}
+\def\acts{\mathrel{\reflectbox{$\righttoleftarrow$}}}
+\usepackage{cleveref, xcolor, bbm, array,
+  esint,nicefrac,tikz-cd,tikz,enumitem}
+% \usetikzlibrary{patterns}
+\usepackage[toc,page]{appendix}
+\usepackage{physics}
+%\usepackage[protrusion=true,expansion=true]{microtype}
+\usepackage{natbib}
+% \usepackage[nottoc]{tocbibind}
+% \usepackage{wrapfig}
+\usepackage{float}
+% \usepackage{kpfonts}
+% \usepackage[utf8]{inputenc}
+% \usepackage[T1]{fontenc}
+% \usepackage{yfonts}
+% \usepackage{kpfonts,fontspec}
+% \usepackage[math-style=ISO, bold-style=ISO]{unicode-math}
+
+% \setmathfont{Garamond-Math.otf}
+
+% \usepackage[urw-garamond]{mathdesign}
+% \usepackage{garamondx}
+% \usepackage{newtxmath}
+%\usepackage{lmodern}
+
+% \usepackage{CormorantGaramond}
+%\setmathfont{Garamond-Math.otf}[StylisticSet={7,9}]
+
+% \usepackage{minitoc, tocloft}
+
+% \usepackage[margin=1in]{geometry}
+%\usepackage[right= 4.5cm, left=4.5cm, top= 2.5cm, bottom=2.0cm]{geometry}
+
+% \pagenumbering{gobble} 
+% \setenumerate{noitemsep}
+
+
+
+\let\mbb\mathbb
+\let\mscr\mathscr
+\let\mc\mathcal
+\let\mf\mathfrak
+\let\mbf\mathbf
+\newcommand{\pur}[1]{{\color{purple!45!black} #1}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\renewcommand{\P}{\mathbb{P}}
+\renewcommand{\H}{\textfrak{H}}
+\renewcommand{\O}{\mathscr{O}}
+\newcommand{\Ca}{\mathscr{C}}
+\newcommand{\F}{\mbb{F}}
+\renewcommand{\L}{\mathscr{L}}
+\newcommand{\p}{\mathfrak{p}}
+\newcommand{\Lip}{\mathrm{Lip}\,}
+\newcommand{\lav}{\mathrm{Lav}}
+\newcommand{\Lav}{\mathrm{Lav}}
+\newcommand{\loc}{\text{loc}}
+\newcommand{\nsub}{\trianglelefteq}
+\newcommand{\Set}{\mathbf{Set}}
+\newcommand{\Ab}{\mathbf{Ab}}
+\newcommand{\Sc}{\mathbf{Sc}}
+\newcommand{\Aff}{\mathbf{Aff}}
+\newcommand{\Coh}{\mathbf{Coh}}
+\newcommand{\Ring}{\mathbf{Ring}}
+\newcommand{\Comp}{\mathbf{Comp}}
+\newcommand{\Mod}{\mathbf{Mod}}
+\newcommand{\pow}[1]{[\![#1]\!]}
+% \newcommand{\norm}[2]{\left\lVert #1 \right\rVert_{#2}}
+\newcommand{\Norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand*{\defeq}{\mathrel{\vcenter{\baselineskip0.5ex \lineskiplimit0pt
+      \hbox{\scriptsize.}\hbox{\scriptsize.}}}%
+  =}
+
+\newcommand\labelenumi{\textnormal{(\Roman{enumi})}}
+\renewcommand\theenumi\labelenumi
+\newcommand{\labelitemi}{$\circ$}
+\newcommand{\labelitemii}{$\diamond$}
+% \renewcommand{\qedsymbol}{$\blacksquare$ \\} 
+\renewcommand{\setminus}{\smallsetminus}
+\renewcommand{\bar}{\overline}
+\renewcommand{\tilde}{\widetilde}
+% \renewcommand{\phi}{\varphi}
+\renewcommand{\theta}{\vartheta}
+\renewcommand{\emptyset}{\varnothing}
+\renewcommand{\op}{\text{op}}
+\newcommand{\ls}[2]{\qty(\frac{#1}{#2})}
+
+\renewcommand{\arraystretch}{2}
+%\renewcommand{\cftsecfont}{\small}
+
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Reg}{Reg}
+% \DeclareMathOperator{\Res}
+\DeclareMathOperator*{\esssup}{ess\,sup}
+\DeclareMathOperator{\spn}{span}
+\DeclareMathOperator{\Sl}{Sl}
+\DeclareMathOperator{\Gl}{Gl}
+\DeclareMathOperator{\Id}{Id}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\Gal}{Gal}
+\DeclareMathOperator{\Pic}{Pic}
+\DeclareMathOperator{\Char}{char}
+\DeclareMathOperator{\AC}{AC}
+\DeclareMathOperator{\OP}{OP}
+\DeclareMathOperator{\pSh}{pSh}
+\DeclareMathOperator{\Sh}{Sh}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\Fun}{Fun}
+\DeclareMathOperator{\im}{Im}
+\DeclareMathOperator{\et}{\acute{e}t}
+\DeclareMathOperator{\Cl}{Cl}
+% \theoremstyle{plain}
+% \newtheorem{thm}{Theorem}[section]
+% \newtheorem{cor}[thm]{Corollary}
+% \newtheorem*{conj}{Question}
+% \newtheorem{lemma}[thm]{Lemma}
+% \newtheorem{prop}[thm]{Proposition}
+% \theoremstyle{definition}
+% \newtheorem{mydef}[thm]{Definition}
+% \newtheorem{example}[thm]{Example}
+% \newtheorem{non-example}[thm]{Non-example}
+% \theoremstyle{remark}
+% \newtheorem*{remark}{Remark}
+% \theoremstyle{definition}
+% \newtheorem{exercise}{Exercise}
+% \numberwithin{equation}{section}
+
+% \hypersetup{
+%   colorlinks,
+%   linkcolor={red!50!black},
+%   citecolor={purple!45!black},
+%   urlcolor={green!40!black}
+% }
+\makeatletter
+\newcommand{\Pause}[1][]{\unless\ifmeasuring@\relax
+\pause[#1]%
+\fi}
+\makeatother
+
+\begin{document}
+\title{Computing $p$-adic $L$-functions \\ \normalsize using Hilbert Eisenstein series}
+\author{Håvard Damm-Johnsen}
+\date{Y-RANT 18/08/21}
+\institute{University of Oxford}
+
+\maketitle
+\begin{frame}
+  \frametitle{Outline}
+
+  \begin{itemize}[itemsep=5pt]
+  \item \textbf{Motivation}: why study $L$-functions? 
+    
+  \item \textbf{Theory} behind the Klingen-Siegel method
+
+  \item \textbf{Algorithm} for computing $p$-adic $L$-functions
+
+  \item \textbf{Data}: some explicit $L$-functions 
+
+  \item \textbf{Further research}: coming up
+    
+  \end{itemize}
+
+  
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Motivation: why do we care about $L$-functions?}
+\begin{itemize}[leftmargin=2pt]\pause
+\item \emph{$L$-functions}: $L(X,s)$ - meromorphic functions encoding
+  arithmetic data\pause 
+  \begin{itemize}
+  \item $X = F$ number field: Dirichlet class number formula \pause
+    \[ \Res_{s=1}\zeta_{F}(s)= \frac{2^{r_{1}}(2\pi)^{r_{2}}\Reg_{F}h_{F}
+      }{w_{F}\sqrt{|D_{F}|}} \qq{where} \zeta_{F}(s) \defeq \sum_{I \subset \O_{F}}
+      \frac{1}{N(I)^{s}}. \pause
+    \]
+  \item $X = $ elliptic curve: BSD conjecture, Gross-Zagier formula\pause
+  \item $X = $ algebraic variety: Conjectures of Bloch, Beilinson, Deligne, ... \pause 
+  \end{itemize}
+\item \emph{$p$-adic $L$-functions}: 
+  $L_{p}(X,s) \colon \Z_{p}\to \C_{p}$ - interpolates special values of
+  $L(X,s)$ \pause 
+\begin{itemize}
+\item Iwasawa main conjectures \pause
+\item $p$-adic BSD conjecture \pause
+\end{itemize} 
+\item \textbf{Data is important!}
+\end{itemize}
+
+\end{frame}
+\begin{frame}
+  \frametitle{Theory I}
+\begin{itemize}\pause
+
+\item \textbf{Euler + functional equation:} for $k$ even, $\zeta(1-k) = -B_{k}/k$.\pause
+\item \textbf{Kummer:} if $k \equiv k' \mod{p-1}p^{N}$ are even, then
+  \[   (1-p^{k-1})\frac{B_{k}}{k} \equiv (1-p^{k'-1})\frac{B_{k'}}{k'} \mod{p^{N}}.\pause
+  \]
+\vspace{-5pt}
+\item By $p$-adic analysis, if
+  $k_{0}\equiv k_{1}\equiv \ldots \mod{p-1}$, then $(1-p^{k_{i}-1})\zeta(1-k_{i})$ interpolate to
+  $\zeta_{p}\colon \Z_{p}\to \C_{p}$. \pause
+\item different ``branches'' corresponding to $\bar k_{0} \in \Z/(p-1)\Z$.\pause
+\item We can approximate $\zeta_{p}(s)$ by computing $\zeta(1-k)$ for
+  enough $k$ and use polynomial interpolation: \pause
+
+\item given pairs
+  $(1-k_{0},\zeta(1-k_{0})),\ldots, (1-k_{d},\zeta(1-k_{d}))$, find a polynomial
+  $P$ of degree $d$ such that $P(1-k_{i}) = \zeta(1-k_{i})$. \pause
+\item \textbf{Eg.} $p=5, k_{i}\in \{2,6,10\}$, interpolate $\{(k_{i},-(1-5^{k_{i}-1})B_{k_{i}}/k_{i})\}$: \pause
+  \[\left(5^{2} \cdot 4828 + O(5^{8})\right) s^{2} + \left(5 \cdot 60514 + O(5^{8})\right) s + 51662 + O(5^{8})\pause \ ``\approx"  \ \zeta_{5}(s)
+  \]
+\end{itemize}
+
+\end{frame}
+
+
+
+
+\begin{frame}
+  \frametitle{Theory II}
+\begin{itemize}[leftmargin=2pt]\pause
+\item Fix $F$ a totally real number field of degree $d$, $\psi$ a
+  character of $\Cl_{\mc m}^{+}$. \pause
+\item Define $L(\psi,s) \defeq \sum_{n > 0} \psi(n)n^{-s}$; \pause then
+  $L(\psi,1-k) = -B_{k,\psi}/k \in \bar \Q$.\pause
+\item Interpolation: $L_{p}(\psi,1-k) = (1-\psi(p)p^{k-1})L(\psi,1-k)$. \pause
+\item However, not obvious how to compute $B_{k,\psi}$ algebraically, so
+  we need a new strategy! \pause
+\item \textbf{Serre (Antwerp III):} The modular form
+  \[ G_{k}^{*} = \frac{1}{2} \zeta_{p}(1-k) + \sum_{n=1}^{\infty}\qty(\sum_{d \mid n,\,
+    (d,p)=1}d^{k-1})q^{n}
+  \]
+  on $\Gamma_{0}(p)$ is a $p$-adic limit of $G_{k_{i}}$. \pause
+\item Congruences between non-constant terms gives congruences between
+  the constant terms, in fact, the Kummer congruences.
+\end{itemize}
+% (More details can be found in a preprint by Lauder-Vonk)
+\end{frame}
+
+\begin{frame}{Theory III}
+\begin{itemize}[leftmargin=-3pt]
+\item \textbf{Idea:} look for modular forms with constant term $L(\psi,1-k)$.\pause
+% \item  A \textbf{Hilbert modular form} is a function $f \colon \mf h^{d} \to
+%   \C$ which ``transforms like a modular form'' under
+%   $\Sl_{2}(\O_{F}) \acts \mf h^{d}$.\pause
+\item There is a \emph{Hilbert modular form}
+  \[ \hspace{-10pt}G_{k,\psi}^{(p)}(z_{1},\ldots, z_{d}) = L_{p}(\psi,1-k) + 2^{d}\sum_{\nu \in \mf
+      d^{-1}_{+}}\Big(\!\sum_{\substack{\mf a \mid (\nu)\mf d \\ (\mf a, p) =
+        1}}\psi(\mf a)N(\mf a)^{k-1}\!\Big)e^{2\pi i (\sigma_{1}(\nu)z_{1} + \ldots
+      \sigma_{d}(\nu)z_{d})}. \pause
+  \]
+  
+% \item \textbf{Deligne-Ribet:} the ``Hilbert Eisenstein series'',
+%   \[ \hspace{-10pt}G_{k,\psi}^{(p)}(z_{1},\ldots, z_{d}) = L_{p}(\psi,1-k) + 2^{d}\sum_{\nu \in \mf
+%       d^{-1}}\Big(\!\sum_{\substack{\mf a \mid (\nu)\mf d \\ (\mf a, p) =
+%         1}}\psi(\mf a)N(\mf a)^{k-1}\!\Big)e^{2\pi i (\sigma_{1}(\nu)z_{1} + \ldots \sigma_{d}(\nu)z_{d})}
+%   \]
+
+\item Setting $z_{1} = \ldots = z_{d} = z$, we get the \textbf{diagonal restriction}
+  \[\Delta_{k,\psi}(z) = L_{p}(\psi,1-k) + 2^{d}\sum_{n>0}\sum_{\substack{ \nu \in \mf
+      d^{-1}_{+}\\ \tr(\nu) = n}}\Big(\!\sum_{\substack{\mf a \mid (\nu)\mf d \\ (\mf a, p) =
+        1}}\psi(\mf a)N(\mf a)^{k-1}\!\Big)q^{n}\pause
+  \]
+\item This is a classical modular form of weight $dk$. \pause
+\item \textbf{Key idea:} knowing a basis for $M_{dk}$ and enough coefficients of
+  $\Delta_{k,\psi}(z)$ lets us solve for $L_{p}(\psi,1-k)$!
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Algorithm}\pause
+  \textbf{Input:}\pause
+  \begin{itemize}[itemsep=0pt,leftmargin=2pt]
+  \item $F$ totally real number field,\pause
+  \item $p$ odd prime,\pause
+  \item $k_0 \in \Z $ ``starting weight'', $m \in \N$ ``precision'',\pause
+  \item  $\psi$ a character of $F$ with the same parity as $k_{0}$. \pause
+  \end{itemize}
+
+ \textbf{Output:} $L_p(\psi,s)$ as an element of $\O_{F}[s]/(p^m)$. \pause
+
+ \begin{enumerate}[leftmargin=2pt]
+ \item Set interpolation weights $k_{j} = k_{0} + j(p-1)$, \pause  compute
+   bases for $M_{dk_{j}}(\Gamma_{0}(M),\psi)$ for $j =1, \ldots ,\delta_{m}$.\pause
+ \item Compute non-constant coefficients of $\Delta_{k_{j},\psi}$:
+   \[ a_{n} =\sum_{\substack{ \nu \in \mf
+      d^{-1}_{+}\\ \tr(\nu) = n}}\sum_{\substack{\mf a \mid (\nu)\mf d \\ (\mf a, p) =
+        1}}\psi(\mf a)N(\mf a)^{k_{j}-1}, \qq{} n>0. \pause
+   \]
+ \item Write $\Delta_{k_{j},\psi}$ as linear combination of modular forms in
+   $M_{dk_{j}}$ and solve for constant term, $L_{p}(\psi,1-k_{j})$. \pause
+ \item Interpolate the $\delta_{m}+1$ values of $L_{p}(\psi,1-k_{j})$ to find
+   $L_{p}(\psi,s)$.
+ \end{enumerate}
+
+\end{frame}
+
+% \begin{frame}
+%   \frametitle{Data, $F = \Q(\sqrt{3})$}
+%   \tiny
+% \begin{tabular}{|p{.02\linewidth}|p{.93\linewidth}|} \hline
+% {\small $p$ }&{\small  $L_p(\mbf 1,s) \in \O_{F}[s] \pmod{p^{m}}$} \\ \hline
+%   \hline
+% $5$ & $O(5^{8}) s^{14} + O(5^{8}) s^{13} + O(5^{8}) s^{12} + O(5^{8}) s^{11} + O(5^{8}) s^{10} + O(5^{8}) s^{9} + O(5^{8}) s^{8} + \left(5^{6} \cdot 12 + O(5^{8})\right) s^{7} + \left(5^{6} \cdot 18 + O(5^{8})\right) s^{6} + \left(5^{4} \cdot 308 + O(5^{8})\right) s^{5} + \left(5^{5} \cdot 12 + O(5^{8})\right) s^{4} + \left(5^{3} \cdot 811 + O(5^{8})\right) s^{3} + \left(5^{3} \cdot 1839 + O(5^{8})\right) s^{2} + \left(5 \cdot 202997 + O(5^{9})\right) s + 8760231 + O(5^{10})$ \\ \hline
+% $7$ & $O(7^{9}) s^{12} + O(7^{9}) s^{11} + O(7^{9}) s^{10} + \left(7^{8} \cdot 4 + O(7^{9})\right) s^{9} + \left(7^{7} \cdot 26 + O(7^{9})\right) s^{8} + \left(7^{6} \cdot 339 + O(7^{9})\right) s^{7} + \left(7^{6} \cdot 41 + O(7^{9})\right) s^{6} + \left(7^{5} \cdot 1955 + O(7^{9})\right) s^{5} + \left(7^{4} \cdot 12339 + O(7^{9})\right) s^{4} + \left(7^{3} \cdot 43352 + O(7^{9})\right) s^{3} + \left(7^{2} \cdot 755539 + O(7^{9})\right) s^{2} + \left(7 \cdot 2363400 + O(7^{9})\right) s + 236098386 + O(7^{10})$ \\ \hline
+% $11$ & $O(11^{9}) s^{12} + O(11^{9}) s^{11} + O(11^{10}) s^{10} + \left(11^{9} \cdot 7 + O(11^{10})\right) s^{9} + \left(11^{9} \cdot 9 + O(11^{10})\right) s^{8} + \left(11^{7} \cdot 983 + O(11^{10})\right) s^{7} + \left(11^{6} \cdot 2077 + O(11^{10})\right) s^{6} + \left(11^{5} \cdot 99624 + O(11^{10})\right) s^{5} + \left(11^{4} \cdot 874530 + O(11^{10})\right) s^{4} + \left(11^{3} \cdot 15178197 + O(11^{10})\right) s^{3} + \left(11^{2} \cdot 760252 + O(11^{9})\right) s^{2} + \left(11 \cdot 125621362 + O(11^{9})\right) s + 18201420921 + O(11^{10})$ \\ \hline
+% $13$ & $O(13^{10}) s^{11} + O(13^{10}) s^{10} + \left(13^{9} \cdot 10 + O(13^{10})\right) s^{9} + \left(13^{8} \cdot 118 + O(13^{10})\right) s^{8} + \left(13^{7} \cdot 811 + O(13^{10})\right) s^{7} + \left(13^{6} \cdot 210 + O(13^{10})\right) s^{6} + \left(13^{5} \cdot 88733 + O(13^{10})\right) s^{5} + \left(13^{4} \cdot 3403408 + O(13^{10})\right) s^{4} + \left(13^{4} \cdot 2585989 + O(13^{10})\right) s^{3} + \left(13^{2} \cdot 84148803 + O(13^{10})\right) s^{2} + \left(13 \cdot 9530516807 + O(13^{10})\right) s + 41080902718 + O(13^{10})$ \\ \hline
+% $17$ & $O(17^{10}) s^{11} + O(17^{10}) s^{10} + \left(17^{9} \cdot 10 + O(17^{10})\right) s^{9} + \left(17^{8} \cdot 277 + O(17^{10})\right) s^{8} + \left(17^{7} \cdot 2442 + O(17^{10})\right) s^{7} + \left(17^{6} \cdot 20929 + O(17^{10})\right) s^{6} + \left(17^{5} \cdot 144868 + O(17^{10})\right) s^{5} + \left(17^{4} \cdot 16905741 + O(17^{10})\right) s^{4} + \left(17^{3} \cdot 15764965 + O(17^{10})\right) s^{3} + \left(17^{2} \cdot 4172504534 + O(17^{10})\right) s^{2} + \left(17^{2} \cdot 6858913505 + O(17^{10})\right) s + 1413992627558 + O(17^{10})$ \\ \hline
+% $19$ & $O(19^{10}) s^{11} + O(19^{10}) s^{10} + \left(19^{9} \cdot 5 + O(19^{10})\right) s^{9} + \left(19^{8} \cdot 96 + O(19^{10})\right) s^{8} + \left(19^{7} \cdot 2895 + O(19^{10})\right) s^{7} + \left(19^{6} \cdot 56680 + O(19^{10})\right) s^{6} + \left(19^{5} \cdot 2164758 + O(19^{10})\right) s^{5} + \left(19^{4} \cdot 9456125 + O(19^{10})\right) s^{4} + \left(19^{3} \cdot 809885956 + O(19^{10})\right) s^{3} + \left(19^{2} \cdot 10906738871 + O(19^{10})\right) s^{2} + \left(19 \cdot 19464966193 + O(19^{10})\right) s + 6019547436581 + O(19^{10})$ \\ \hline
+% \end{tabular}
+% \end{frame}
+
+\begin{frame}
+  \frametitle{Data, $F = \Q(\sqrt{7})$}
+  \tiny
+\begin{tabular}{|p{.02\linewidth}|p{.95\linewidth}|} \hline
+{\small $p$} & {\small $L_p(\mbf{1},s) \in \O_{F}[s] \pmod{p^{m}}$} \\ \hline \hline
+$5$ & $O(5^{8}) s^{14} + O(5^{8}) s^{13} + O(5^{8}) s^{12} + O(5^{8}) s^{11} + O(5^{8}) s^{10} + O(5^{8}) s^{9} + \left(5^{7} \cdot 1 + O(5^{8})\right) s^{8} + \left(5^{6} \cdot 2 + O(5^{8})\right) s^{7} + \left(5^{5} \cdot 49 + O(5^{8})\right) s^{6} + \left(5^{4} \cdot 568 + O(5^{8})\right) s^{5} + \left(5^{4} \cdot 186 + O(5^{8})\right) s^{4} + \left(5^{3} \cdot 2476 + O(5^{8})\right) s^{3} + \left(5^{2} \cdot 12643 + O(5^{8})\right) s^{2} + \left(5 \cdot 116522 + O(5^{9})\right) s + 1005394 + O(5^{10})$ \\ \hline
+$11$ & $O(11^{9}) s^{12} + O(11^{9}) s^{11} + O(11^{10}) s^{10} + \left(11^{9} \cdot 9 + O(11^{10})\right) s^{9} + \left(11^{8} \cdot 45 + O(11^{10})\right) s^{8} + \left(11^{7} \cdot 538 + O(11^{10})\right) s^{7} + \left(11^{6} \cdot 5908 + O(11^{10})\right) s^{6} + \left(11^{5} \cdot 94233 + O(11^{10})\right) s^{5} + \left(11^{4} \cdot 653451 + O(11^{10})\right) s^{4} + \left(11^{3} \cdot 1368033 + O(11^{10})\right) s^{3} + \left(11^{3} \cdot 691404 + O(11^{9})\right) s^{2} + \left(11 \cdot 43622653 + O(11^{9})\right) s + 25656523351 + O(11^{10})$ \\ \hline
+$13$ & $O(13^{10}) s^{11} + O(13^{10}) s^{10} + \left(13^{9} \cdot 9 + O(13^{10})\right) s^{9} + \left(13^{8} \cdot 167 + O(13^{10})\right) s^{8} + \left(13^{7} \cdot 825 + O(13^{10})\right) s^{7} + \left(13^{6} \cdot 20775 + O(13^{10})\right) s^{6} + \left(13^{5} \cdot 260717 + O(13^{10})\right) s^{5} + \left(13^{4} \cdot 3958931 + O(13^{10})\right) s^{4} + \left(13^{3} \cdot 10298345 + O(13^{10})\right) s^{3} + \left(13^{3} \cdot 37593275 + O(13^{10})\right) s^{2} + \left(13 \cdot 10196962616 + O(13^{10})\right) s + 104887446825 + O(13^{10})$ \\ \hline
+$17$ & $O(17^{10}) s^{11} + O(17^{10}) s^{10} + \left(17^{9} \cdot 16 + O(17^{10})\right) s^{9} + \left(17^{9} \cdot 11 + O(17^{10})\right) s^{8} + \left(17^{7} \cdot 3442 + O(17^{10})\right) s^{7} + \left(17^{6} \cdot 43576 + O(17^{10})\right) s^{6} + \left(17^{5} \cdot 731121 + O(17^{10})\right) s^{5} + \left(17^{4} \cdot 19535454 + O(17^{10})\right) s^{4} + \left(17^{3} \cdot 2220157 + O(17^{10})\right) s^{3} + \left(17^{2} \cdot 311956925 + O(17^{10})\right) s^{2} + \left(17 \cdot 12743287888 + O(17^{10})\right) s + 497360978290 + O(17^{10})$ \\ \hline
+$19$ & $O(19^{10}) s^{11} + O(19^{10}) s^{10} + \left(19^{9} \cdot 3 + O(19^{10})\right) s^{9} + \left(19^{8} \cdot 356 + O(19^{10})\right) s^{8} + \left(19^{7} \cdot 5512 + O(19^{10})\right) s^{7} + \left(19^{6} \cdot 86567 + O(19^{10})\right) s^{6} + \left(19^{5} \cdot 784303 + O(19^{10})\right) s^{5} + \left(19^{4} \cdot 35196026 + O(19^{10})\right) s^{4} + \left(19^{3} \cdot 755707686 + O(19^{10})\right) s^{3} + \left(19^{2} \cdot 13133906787 + O(19^{10})\right) s^{2} + \left(19 \cdot 27470894456 + O(19^{10})\right) s + 226617386081 + O(19^{10})$ \\ \hline
+\end{tabular}
+
+\end{frame}
+\begin{frame}
+  \frametitle{Implementation}
+\begin{itemize}[leftmargin=2pt]\pause
+\item Currently only implemented for trivial character, real quadratic fields.\pause
+\item \texttt{sage} has experimental support for Hecke characters via 
+  \texttt{gp/pari}.\pause
+% \item \texttt{magma} implementation only works with ring class
+%   characters.\pause
+\item Computationally heavy bits:\pause
+  \begin{itemize}
+  \item Computing diagonal restriction coefficients\pause
+    
+  \item[->] For ring class characters, reduction theory of quadratic forms\pause
+  \item Finding $q$-expansion bases of modular forms of high weight\pause
+  \item[->] Randomised algorithm due to Lauder \pause
+  \item[->] Is highly parallelisable \pause
+  \end{itemize}
+\item Roblot '15: Alternative algorithm based on Cassou-Noguès'
+  construction of $p$-adic $L$-functions - less efficient in practice.
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Further venues}
+  \begin{itemize}[leftmargin=2pt]
+  \item Statistics of $\lambda$-invariants à la Ellenberg-Jain-Venkatesh.\pause
+\item Darmon-Pozzi-Vonk: if $L(\psi,s)$ has an exceptional zero at $0$, then $L'(\psi,0)$ is the
+  constant term of an overconvergent modular form\pause
+  \begin{itemize}
+  \item computed using a similar algorithm\pause
+  \item gives log of ``Gross-Stark units'' of the Hilbert class
+    field of $F$\pause
+  \end{itemize}
+\item Can we generalise to $p$-adic
+  $L$-functions of automorphic representations?
+\end{itemize}
+
+\end{frame}
+\begin{frame}[standout]
+  Thank you! \\ 
+  Questions?
+\end{frame}
+
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
