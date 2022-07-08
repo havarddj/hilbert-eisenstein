@@ -1,0 +1,4 @@
+#+TITLE: Computing L-functions and Gross-Stark units using Hilbert Eisenstein series
+* Introduction
+* Examples
+* 

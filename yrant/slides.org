@@ -1,7 +1,0 @@
-#+TITLE: Computing \(p\)-adic \(L\)-functions
-#+DATE: 15/08/21
-#+AUTHOR: Håvard Damm-Johnsen
-
-* Motivation 
-
-* 

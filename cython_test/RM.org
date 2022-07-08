@@ -1,4 +1,0 @@
-#+TITLE: Details for computing the RM sets
-* Idea of computation:
-** Single RM-set:
-

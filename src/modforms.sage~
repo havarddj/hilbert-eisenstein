@@ -1,0 +1,23 @@
+def find_const_term(M, f, K=QQ):
+    """given a q-expansion basis M, and f a q-expansion in M with
+    missing constant term, find constant term of f.
+    """
+    if M == []:
+        print("Basis is empty")
+        return(0)
+    R.<Z> = PowerSeriesRing(K)
+    A = [R(M[j]).padded_list()[1:] for j in [0..len(M)-1]]
+    Mat = Matrix(K, A)
+    try:
+        # print("f has coeffs", f.padded_list())
+        # print("basis matrix given by", Mat)
+        soln = Mat.transpose() \ vector(K, f.padded_list()[1:])
+    except ValueError as e:
+        # print(e)
+        if str(e) != "matrix equation has no solutions":
+            raise
+        else:
+            print("not in space of forms")
+            return(0)
+    CT = (sum(soln[n]*M[n] for n in [0..len(M)-1]))[0]
+    return(CT)
