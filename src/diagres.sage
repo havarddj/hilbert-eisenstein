@@ -1,6 +1,7 @@
 # attach("quadforms.sage")
 # load("modforms.sage")
 from sage.modular.overconvergent.hecke_series import katz_expansions
+from sage.modular.overconvergent.hecke_series import higher_level_katz_exp
 
 def DiagonalRestriction(F,k,m, pStab=1):
     """Compute the diagonal restriction of the Hilbert Eisenstein
@@ -49,7 +50,7 @@ def DiagonalRestrictionDerivative(Q,p,m):
     D0 = fundamental_discriminant(D)
     f = sqrt(D/D0)
     # for now, assume f = 0
-    assert f == 1, "Only implemented for fundamental discriminants"
+    # assert f == 1, "Only implemented for fundamental discriminants"
     assert kronecker_symbol(D,p) == -1, "p must be inert in Q(sqrt(D))"
     assert p >= 5, "for now overconvergent forms in sage only work when p > 3"
     F = QuadraticField(D)
@@ -71,21 +72,24 @@ def DiagonalRestrictionDerivative(Q,p,m):
         prod_n = 1
         for i in range(len(Fp)):
             a,b,c = Fp[i]
-            if gcd(a, f*p) == 1:
+            if gcd(a, p) == 1:
                 prod_n *= (-b+n*sqrtD)/(2*a)
             a,b,c = Fm[i]
-            if gcd(a, f*p) == 1:
+            if gcd(a, p) == 1:
                 prod_n /= (-b+n*sqrtD)/(2*a)
-        Diag_F += (2*q^n)*log(prod_n/p^prod_n.valuation())
-    # print(Diag_F)
+                
+        Diag_F += (2*q^n)*log(prod_n/p^prod_n.valuation(p))
+    print(Diag_F)
     # return Diag_F
     if Diag_F == 0:
         return 0
-    elif p >= 5:
+    elif p >= 5 and f == 1:
         M = katz_expansions(2,p,m-1,m,m)[0]  # katz_expansions returns ([q_exp_basis],E_p-1)
-        # print(M)
-        ct = is_overconvergent(M, Diag_F)
-        return (ct+Diag_F).add_bigoh(m)
+    else:
+        M = higher_level_katz_exp(p,f,2,m,m,m-1,(m-1)*p,false,12)
+    # print(M)
+    ct = is_overconvergent(M, Diag_F)
+    return (ct+Diag_F).add_bigoh(m)
 
 
     

@@ -40,21 +40,20 @@ def is_overconvergent(M,f):
         return(0)
     R.<Z> = PowerSeriesRing(Rp)
     A = []
-    for j in [0..len(M)-1]:   # for each row of M do:
+    for j in range(len(M)):   # for each row of M do:
         # make row vector of lifts of coefficients to Kp, and append to A
         A.append([Rp(c.lift()) for c in M[j][1:]])
-    # assert len(A[0]) == len(f.padded_list()[1:])  ## should be m-1
+    # A.append([Rp(Kp(c)) for c in f.padded_list()[1:]])
     print("trying to solve linear system")
-    # fvec = [Rp(Kp(c)) for c in f.padded_list()[1:]]
     try:
         # print("f has coeffs", f.padded_list())
         # print("basis matrix given by", Mat)
         # the \ operator solves Ax = B for x, same as solve_right
         soln = Matrix(Rp,A).transpose() \ vector(Rp, f.padded_list()[1:])
-
+        # print(soln)
         # soln = Matrix(Rp, A).transpose().solve_right(fvec)
-
-        # print(f"kernel is given by {Y}")
+        # soln = Matrix(Kp,A).kernel().basis()[0]
+        # print(f"kernel is given by {Y.basis()[0]} etc")
 
     except ValueError as e:
         # print(e)
@@ -67,8 +66,85 @@ def is_overconvergent(M,f):
 
     for l in range(len(soln)):
         print(f"valuation coordinate {l} = {valuation(soln[l],Kp.prime())}")
-    # print(len(soln),len(A))
-    assert len(soln) == len(A)
-    CT = (sum(soln[n]*Rp(M[n][0].lift()) for n in range(len(A))))
+    print(f"length of soln vec = {len(soln)} and length of M = {len(M)}")
+    CT = sum(soln[n]*Rp(M[n][0].lift()) for n in range(len(soln)))
 
     return(CT)
+
+def find_in_space(f, M, K=QQ):
+    """given a set of q-expansions M, and f a q-expansion, write f as
+    linear combination of forms in M.
+    """
+    if "Power Series" not in str(f.parent()):
+        print("Warning: f should be power series. Currently f is in ", f.parent())
+    if M == []:
+        return 0 
+    
+    R.<Z> = PowerSeriesRing(K)
+    m = min([len(f.padded_list())]
+            + [len(M[i].padded_list()) for i in range(len(M))])
+
+    A = [R(M[i]).padded_list()[:m] for i in range(len(M))]
+
+    Mat = Matrix(K, A)
+    try:
+        soln = Mat.transpose() \ vector(K, f.padded_list())
+    except ValueError as e:
+        if str(e) != "matrix equation has no solutions":
+            raise
+        else:
+            print("f is not in K-span of M for K = ",K)
+            return 0
+    return(soln)
+
+
+def modform_trace(f,p, m=30):
+    """compute trace of f from level Np to level p
+    RMK: I'm not sure if this is correct if N is composite!
+    """
+    N = f.level()/p
+    assert N in ZZ, f"level of f = {f.level()} must be divisible by p = {p}"
+    N = ZZ(N)
+    
+    M = f.parent()
+    # confusing point: if M has level Np, then Mold_submodule(N)
+    # returns the images of the degeneracy maps from level p, i.e. is
+    # precisely the p-new space in my notation.
+    Mold = M.old_submodule(N) # everything coming from level p
+    try:
+        Mnew = Mold.complement() # everything else, i.e. coming from
+                                 # level N = Q.conductor()
+    except NotImplementedError as e:
+        print("failed to compute new/old decomposition")
+        return None
+                             
+    B = Mnew.q_expansion_basis(m) + Mold.q_expansion_basis(m)
+
+    combo = find_in_space(f.q_expansion(m),B)
+
+    dimold = Mold.dimension()
+    dimnew = Mnew.dimension()
+    dim = M.dimension()
+    assert dimold + dimnew == dim
+    fnew = sum(Mnew.basis()[i]*combo[i] for i in
+                              range(dimnew))
+    fold = f - fnew
+    print(f"fnew = {fnew}")
+    print(f"fold = {fold}")
+
+    # now to compute the composite of the degeneracy map and the
+    # trace, we need to find a preimage of fold under the product map
+    # (f,g) ~> (f(q),g(q^N)). "ll" means "lower level"
+    Mll = ModularForms(Gamma0(p))
+    ll_dim = Mll.dimension()
+    R.<q> = PowerSeriesRing(QQ)
+    im_basis = [g for g in Mll.q_expansion_basis(m)] + [g(q^N) for g in Mll.q_expansion_basis(m)]
+
+    ll_combo = find_in_space(fold.q_expansion(m),im_basis)
+
+    f1 = sum([Mll.basis()[i]*ll_combo[i] for i in range(ll_dim)])
+    f2 = sum([Mll.basis()[i]*ll_combo[i+ll_dim] for i in range(ll_dim)])
+    print(f"fold equals f_1(q) + f_2(q^N), where f1 = {f1} and f2 = {f2}")
+    Tn = Mll.hecke_operator(N)
+    tr = Gamma0(N).index()*f1 + Tn(f2)
+    return Mll(tr)

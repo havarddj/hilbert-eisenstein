@@ -29,9 +29,10 @@ def B1(a):
 
 
 def automorph(F):
-    # first, solve Pell's equation
+    # first, find fundamental unit in order associated to F
     D = F.discriminant()
-    eps = QuadraticField(D).unit_group().fundamental_units()[0]
+    f = F.conductor()
+    eps = fundamental_unit_in_order(D, f)
     if eps.norm() == 1:
         t = eps.trace().abs()
     else:
@@ -61,3 +62,28 @@ def genus_field_roots_of_1(D):
             e *= 3
 
     return e
+
+
+def BQFconductor(Q):
+    D = Q.discriminant()
+    return ZZ(sqrt(D / fundamental_discriminant(D)))
+
+
+def fundamental_unit_in_order(D, f):
+    """ Compute fundamental unit in the order O of Q(\sqrtD) of conductor f;
+    naively, by looking for power of fundamental unit which lands in O.
+    """
+    F = QuadraticField(D)
+    eps = F.unit_group().fundamental_units()[0]
+    O = F.order(F.gen())
+    while eps not in O:
+        eps *= eps
+    return eps
+
+
+def is_discriminant(D):
+    return sqrt(D) not in ZZ and D == QuadraticField(D).discriminant()
+
+
+sage.quadratic_forms.binary_qf.BinaryQF.automorph = automorph
+sage.quadratic_forms.binary_qf.BinaryQF.conductor = BQFconductor
