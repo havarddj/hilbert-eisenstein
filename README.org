@@ -1,10 +1,21 @@
 #+TITLE: Computing L-functions and Gross-Stark units using Hilbert Eisenstein series
 * Introduction
-Computation of algebraic invariants attached to real quadratic fields, using algorithms from [[https://doi.org/10.1007/s00208-020-02086-2][DPV1]] and [[https://arxiv.org/abs/2103.02490][DPV2]]. 
+Computation of algebraic invariants attached to real quadratic fields, using algorithms from [[https://doi.org/10.1007/s00208-020-02086-2][DPV1]] and [[https://arxiv.org/abs/2103.02490][DPV2]].
+* Usage:
+
+Navigate to the main directory, run
+#+begin_src jupyter-python :session py :kernel sagemath :exports both :results scalar
+load "main.sage"
+#+end_src
+
 * Examples
 
+** Compute diagonal restriction derivative
+*Currently not working*
+** Detect Gross-Stark units
+*Currently not working*
 ** Compute traces of diagonal restrictions
-Using some slightly dubious sage code, we are able to compute traces to test a conjecture in DPV2, namely that if we form the Hilbert Eisenstein series attached to a ring class character on $F$, then the \(p\)-stabilisation is usually non-zero, but the trace down to level \(p\) vanishes when $p$ is inert in $F$.
+Using some slightly dubious sage code, we are able to compute traces to test a conjecture in DPV2, namely that if we form the Hilbert Eisenstein series attached to a ring class character on $F$, then the $p$-stabilisation is usually non-zero, but the trace down to level $p$ vanishes when $p$ is inert in $F$.
 
 *** The trace does /not/ vanish when $p$ is split:
 #+begin_src jupyter-python :session py :kernel sagemath :exports both :results scalar
