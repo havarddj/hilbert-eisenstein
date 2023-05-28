@@ -1,78 +1,74 @@
+"""
+Compute Gross-Stark units using p-adic modular forms
+
+AUTHORS:
+
+- Håvard Damm-Johnsen (2023): Initial version
+
+"""
+
 attach("./src/algdep.sage")
+attach("./src/oc.sage")
 attach("./src/diagres.sage")
 attach("./src/modforms.sage")
 attach("./src/quadforms.sage")
 
 
-def GS_unit(F, p, m=50):
+def GS_unit(D, p, nterms=30, pprec=0):
+    # pick quadratic form with minimal special value <=> GS-unit has
+    # minimal p-valuation
+    _, Q = sorted([(Q.Zagier_L_value().abs(), Q)
+                   for Q in BinaryQF_reduced_representatives(D)])[0]
+    return GS_unit_BQF(Q, p, nterms, pprec)
+
+
+def GS_unit_BQF(F, p, nterms=30, pprec=0):
+    if pprec == 0:
+        pprec = nterms
+
     D = F.discriminant()
     assert kronecker_symbol(D, p) == -1, f"{p} is not inert in Q(sqrt({D}))"
-    drd = DiagonalRestrictionDerivative(F, p, m)
+    drd = DiagonalRestrictionDerivative(F, p, nterms, pprec=pprec)
     ct = drd[0]
 
     h = len(BinaryQF_reduced_representatives(D))
     e = genus_field_roots_of_1(D)
+
     print(f"number of roots of unity in HCF={e}")
     # To compute the valuation of the constant term, our choice of
     # normalisation is precisely so that the constant term is p^R where
     # R is the sum of the positive slopes of the vector of L-values
     Qs = BinaryQF_reduced_representatives(D)
-    Lvals = [ZZ(Meyer(Q) * e) for Q in Qs]
-    Lvals = [v / gcd(Lvals) for v in Lvals]
+    Lvals = [ZZ(Q.Zagier_L_value() * e) for Q in Qs]
+    Lvals = [v for v in Lvals]
     for i in range(len(Qs)):
-        print(f"{Qs[i]} has Meyer special value equal to", Lvals[i])
-    # print(f"ct = {ct}")
-
-    return GS_algdep(
-        exp(ct) * QQ(p ^ (Meyer(F) * e / gcd(Lvals))), h, GS_val_vec(D))
-
-
-def trace_test(D, p, bd=20, m=30):
-    # assert kronecker_symbol(
-    #     D, p) == -1, f"p = {p} should be split in Q(\sqrt {D})"
-    # trace_test(69,17, bd=3) shows that the trace is not zero in general
-    assert is_discriminant(
-        D), f"D = {D} should be a (fundamental) discriminant"
-    if kronecker_symbol(D, p) == 1:
-        print(f"p = {p} split in Q(sqrt {D}), coherent case")
-    elif kronecker_symbol(D, p) == -1:
-        print(f"p = {p} inert in Q(sqrt {D}), incoherent case")
-    else:
-        print(f"p = {p} ramified in Q(sqrt {D}), wacky case")
-    if is_fundamental_discriminant(D):
-        print("D is a fundamental discriminant")
-    for N in range(2, bd):
-        print(f"Testing discriminants of conductor {N}")
-        if N != p and D % N != 0 and is_prime(N):
-            for Q in BinaryQF_reduced_representatives(N ^ 2 * D):
-                f = DiagonalRestriction(Q, 1, m, pStab=p)
-                print("f =", f)
-                print("trace of f =", modform_trace(f, p), "\n")
-
-    return 0
+        print(f"{Qs[i]} has L-value equal to", Lvals[i])
+    u = exp(e * ct) * p ^ (-F.Zagier_L_value() * e)
+    print(f"running algdep on {u}")
+    # return algdep_p_adic(u, h)
+    return GS_algdep(u, h, GS_val_vec(D))
 
 
-def p_new_test(D, p, bd=20, m=30):
-    assert kronecker_symbol(
-        D, p) == -1, f"p = {p} should be split in Q(\sqrt {D})"
-    for N in range(2, bd):
-        print(f"Testing discriminants of conductor {N}")
-        if N != p:
-            for Q in BinaryQF_reduced_representatives(N ^ 2 * D):
-                f = DiagonalRestriction(Q, 1, m, pStab=p)
-                # does not work
-                # M = f.parent()
-                # S = ModularSymbols(f.level()).cuspidal_submodule()
-                # if S.dimension() > 0:
-                #     S_new = S.new_subspace(N).q_expansion_basis()
-                # else:
+# def trace_test(D, p, bd=20, m=30):
+#     # assert kronecker_symbol(
+#     #     D, p) == -1, f"p = {p} should be split in Q(\sqrt {D})"
+#     # trace_test(69,17, bd=3) shows that the trace is not zero in general
+#     assert is_discriminant(
+#         D), f"D = {D} should be a (fundamental) discriminant"
+#     if kronecker_symbol(D, p) == 1:
+#         print(f"p = {p} split in Q(sqrt {D}), coherent case")
+#     elif kronecker_symbol(D, p) == -1:
+#         print(f"p = {p} inert in Q(sqrt {D}), incoherent case")
+#     else:
+#         print(f"p = {p} ramified in Q(sqrt {D}), wacky case")
+#     if is_fundamental_discriminant(D):
+#         print("D is a fundamental discriminant")
+#     for N in range(2, bd):
+#         print(f"Testing discriminants of conductor {N}")
+#         if N != p and D % N != 0 and is_prime(N):
+#             for Q in BinaryQF_reduced_representatives(N ^ 2 * D):
+#                 f = DiagonalRestriction(Q, 1, m, pStab=p)
+#                 print("f =", f)
+#                 print("trace of f =", modform_trace(f, p), "\n")
 
-                # E_new = [
-                #     M.eisenstein_subspace().old_submodule(
-                #         ell).q_expansion_basis()
-                #     for ell in divisors(f.level() / N)
-                # ]
-
-                # Mnew = M.span(Ebasis_new + Sbasis_new)
-
-    return None
+#     return 0

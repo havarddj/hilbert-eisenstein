@@ -72,7 +72,6 @@ def get_RM_set(int n, int d, list forms_old):
             gamma_new = Matrix(QQ, gamma_old)*Matrix(QQ, Mn[k])
             gamma_new_inv = gamma_new**(-1)
             # Q_new = matrix_action(Q_old, gamma_new.rows())
-
             # following RM_Points in DiagonalRestrictions.m:
             # why the fuck does this work
             a,b,c = Q_old

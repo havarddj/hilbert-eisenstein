@@ -40,17 +40,18 @@ def is_overconvergent(M,f):
         return(0)
     R.<Z> = PowerSeriesRing(Rp)
     A = []
-    for j in range(len(M)):   # for each row of M do:
+    for g in M: 
         # make row vector of lifts of coefficients to Kp, and append to A
-        A.append([Rp(c.lift()) for c in M[j][1:]])
-    # A.append([Rp(Kp(c)) for c in f.padded_list()[1:]])
-    print("trying to solve linear system")
+        # A.append([Rp(c.lift()) for c in row[1:]])
+        A.append([Rp(Kp(c)) for c in g.padded_list()[1:]])
+    print("Solving linear system")
+
     try:
         # print("f has coeffs", f.padded_list())
         # print("basis matrix given by", Mat)
         # the \ operator solves Ax = B for x, same as solve_right
         soln = Matrix(Rp,A).transpose() \ vector(Rp, f.padded_list()[1:])
-        # print(soln)
+
         # soln = Matrix(Rp, A).transpose().solve_right(fvec)
         # soln = Matrix(Kp,A).kernel().basis()[0]
         # print(f"kernel is given by {Y.basis()[0]} etc")
@@ -64,10 +65,10 @@ def is_overconvergent(M,f):
             return(0)
     print("found constant term!")
 
-    for l in range(len(soln)):
-        print(f"valuation coordinate {l} = {valuation(soln[l],Kp.prime())}")
-    print(f"length of soln vec = {len(soln)} and length of M = {len(M)}")
-    CT = sum(soln[n]*Rp(M[n][0].lift()) for n in range(len(soln)))
+    # for i, x in enumerate(soln):
+    #     print(f"valuation coordinate {i} = {valuation(x,Rp.prime())}")
+    # print(f"length of soln vec = {len(soln)} and length of M = {len(M)}")
+    CT = sum(soln[n]*Rp(M[n][0]) for n in range(len(soln)))
 
     return(CT)
 
@@ -105,8 +106,13 @@ def modform_trace(f,p, m=30):
     N = f.level()/p
     assert N in ZZ, f"level of f = {f.level()} must be divisible by p = {p}"
     N = ZZ(N)
-    
+
+
     M = f.parent()
+
+    # problem with newforms:
+    if "Newform" in str(type(f)):
+        f = M(f.q_expansion(m))
     # confusing point: if M has level Np, then Mold_submodule(N)
     # returns the images of the degeneracy maps from level p, i.e. is
     # precisely the p-new space in my notation.
@@ -134,17 +140,19 @@ def modform_trace(f,p, m=30):
 
     # now to compute the composite of the degeneracy map and the
     # trace, we need to find a preimage of fold under the product map
-    # (f,g) ~> (f(q),g(q^N)). "ll" means "lower level"
+    # (f,g) ~> (f(q)+g(q^N)). "ll" means "lower level"
     Mll = ModularForms(Gamma0(p))
     ll_dim = Mll.dimension()
     R.<q> = PowerSeriesRing(QQ)
     im_basis = [g for g in Mll.q_expansion_basis(m)] + [g(q^N) for g in Mll.q_expansion_basis(m)]
 
-    ll_combo = find_in_space(fold.q_expansion(m),im_basis)
+    ll_combo = find_in_space(fold.q_expansion(m), im_basis)
 
     f1 = sum([Mll.basis()[i]*ll_combo[i] for i in range(ll_dim)])
     f2 = sum([Mll.basis()[i]*ll_combo[i+ll_dim] for i in range(ll_dim)])
     print(f"fold equals f_1(q) + f_2(q^N), where f1 = {f1} and f2 = {f2}")
-    Tn = Mll.hecke_operator(N)
-    tr = Gamma0(N).index()*f1 + Tn(f2)
+    TN = Mll.hecke_operator(N)
+    tr = Gamma0(N).index()*f1 + TN(f2)  # (N+1)f_1 + T(N)f_2
     return Mll(tr)
+
+
