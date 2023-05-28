@@ -1,32 +1,56 @@
 #+TITLE: Computing L-functions and Gross-Stark units using Hilbert Eisenstein series
 * Introduction
-Computation of algebraic invariants attached to real quadratic fields, using algorithms from [[https://arxiv.org/abs/2301.08977][D-J23​]], building on [[https://doi.org/10.1007/s00208-020-02086-2][DPV1]] and [[https://arxiv.org/abs/2103.02490][DPV2]], implemented in ~SageMath~. For corresponding code in ~Magma~, see the repository [[https://github.com/havarddj/drd][DRD]].
+Computation of algebraic invariants attached to real quadratic fields, using algorithms from [[https://arxiv.org/abs/2301.08977][D-J23​]], building on [[https://doi.org/10.1007/s00208-020-02086-2][DPV1]] and [[https://arxiv.org/abs/2103.02490][DPV2]], implemented in ~SageMath~. For corresponding code in ~Magma~, see the [[https://github.com/havarddj/drd][DRD repository]].
 
 * Usage
-
 Navigate to the main directory, run
 #+begin_src jupyter-python :session py :kernel sagemath :exports both :results scalar
-load "main.sage"
+load("main.sage")
 #+end_src
+This loads the necessary files using ~sage~'s ~attach~ command. 
 
 * Examples
 
 ** Compute diagonal restriction derivative
 Let $D$ be a positive fundamental discriminant, and let $p$ be a prime inert in $\mathbb{Q}(\sqrt D)$.
 
-The diagonal restriction derivative is 
-#+begin_src jupyter-python :session py :kernel sagemath :exports both :results scalar
+The diagonal restriction derivative from [[https://arxiv.org/abs/2103.02490][DPV2]], a certain overconvergent $p$-adic modular form of tame level $1$, can be computed using the following function:
 
+#+begin_src jupyter-python :session py :kernel sagemath :exports both :results none
+F = BinaryQF([3,3,-5])
+p = 7
+number_of_terms = 20
+diagonal_restriction_derivative(F,p,number_of_terms)
 #+end_src
 
 ** Compute Gross-Stark units
-The function ~GS_unit(D,p)~ computes the Gross--Stark units attached to a positive fundamental discriminant $D$ and a prime $p$ inert in $\Q(\sqrt D)$.
+The function ~GS_unit(D,p)~ computes the Gross--Stark units attached to a positive fundamental discriminant $D$ and a prime $p$ inert in $\mathbb Q(\sqrt D)$. This is done by recognising the $p$-adic exponential of the constant term of the diagonal restriction derivative as an algebraic number.
 
-#+begin_src jupyter-python :session py :kernel sagemath :exports both :results scalar
+#+begin_src jupyter-python :session py :kernel sagemath :exports both :results none
 GS_unit(221,3)
 #+end_src
 
 ** Zagier reduction of quadratic forms
+The file ~src/quad_forms.sage~ implements Zagier's reduction theory for indefinite binary quadratic forms, and in particular uses it to compute the automorph, meaning the stabiliser in $\operatorname{SL}_2(\mathbb Z)$ and special values of partial $\zeta$-functions, attached to indefinite binary quadratic forms.
+
+#+begin_src jupyter-python :session py :kernel sagemath :exports both :results scalar
+F = BinaryQF([3,3,-5])
+
+F.automorph()
+# [ 17 -15]
+# [ -9   8]
+
+F.is_Zagier_reduced()
+# False
+
+F.Zagier_reduce()
+# x^2 + 9*x*y + 3*y^2
+
+F.Zagier_reduced_cycle()
+# ([x^2 + 9*x*y + 3*y^2, 3*x^2 + 9*x*y + y^2], [9, 3])
+
+#+end_src
+
 
 ** COMMENT Compute traces of diagonal restrictions
 Using some slightly dubious sage code, we are able to compute traces to test a conjecture in DPV2, namely that if we form the Hilbert Eisenstein series attached to a ring class character on $F$, then the $p$-stabilisation is usually non-zero, but the trace down to level $p$ vanishes when $p$ is inert in $F$.
@@ -42,7 +66,7 @@ trace_test(57,17, bd=3)
 In fact, the code suggests something stronger: that the diagonal restriction lies in the complement of the span of the degeneracy maps from level $p$. 
 
 * On compatibility with [[https://github.com/havarddj/drd][magma code]]
-+ The function ~DiagonalRestrictionDerivative~ has been tested against the magma code in , and the generating series copy-pasted from sage is found by magma in the space of overconvergent forms, and the constant term gives rise to a GS unit in the usual way.  (Tested for D = 33, p = 5, Q = 2*x^2 + 3*x*y - 3*y^2)
++ The function ~diagonal_restriction_derivative~ has been tested against the magma code in [[https://github.com/havarddj/drd][the drd repository]]. The (finite approximation to) the diagonal restriction  copy-pasted from ~sage~ is found by ~magma~ in the correct space of overconvergent forms, and the constant term gives rise to a GS unit in the usual way.  (Tested for $D = 33$, $p = 5$, $Q = 2*x^2 + 3*x*y - 3*y^2$.)
 * Todo:
   - [ ] Detach \(p\)-adic precision from number of terms of diagonal restriction derivative, and make intelligent choice automatically
-  - [ ] Implement algorithms to compute Stark--Heegner points using ~sage~'s existing \(p\)-adic uniformisation framework, see [[https://doc.sagemath.org/html/en/reference/arithmetic_curves/sage/schemes/elliptic_curves/ell_tate_curve.html][this.]]
+  - [ ] Implement algorithms to compute Stark--Heegner points using ~sage~'s existing $p$-adic uniformisation framework, see [[https://doc.sagemath.org/html/en/reference/arithmetic_curves/sage/schemes/elliptic_curves/ell_tate_curve.html][this.]]

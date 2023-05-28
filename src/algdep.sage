@@ -111,7 +111,8 @@ def p_adic_eltseq(a):
     Qp-coefficients obtained by writing a as a linear combination of
     basis vectors with respect to the power basis of Kp
     """
-    _, _, psi = a.parent().vector_space()
+    Kp = a.parent()
+    _, _, psi = Kp.vector_space()
     l = psi(a).list()
     g = Kp.gens()[0]
     # assert Kp(a) == sum(l[i]*g^i for i in range(len(l))), f"a = {a} != {sum(l[i]*g^i for i in range(len(l)))}"
@@ -150,9 +151,9 @@ def GS_algdep(a, s, val_list):
     if a.valuation() < 0:
         return GS_algdep(1 / a, s, val_list)
     _.<x> = PolynomialRing(ZZ)
-    Fp = a.parent()
-    d = Fp.degree()
-    p = Fp.prime()
+    Kp = a.parent()
+    d = Kp.degree()
+    p = Kp.prime()
 
     m = a.precision_absolute()
     N = floor(Kp.precision_cap())
@@ -162,7 +163,7 @@ def GS_algdep(a, s, val_list):
     # note that the extra zeros beyond the first don't contribute to any terms.
 
     # primitive p^2-1 th root of 1 in Qp^2
-    zeta = cyclotomic_polynomial(p ^ 2 - 1).roots(Fp)[0][0]
+    zeta = cyclotomic_polynomial(p ^ 2 - 1).roots(Kp)[0][0]
     # print(f"zeta equals {zeta}")
     print(f"partial sums = {val_list}")
 

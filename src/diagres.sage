@@ -3,7 +3,7 @@
 from sage.modular.overconvergent.hecke_series import katz_expansions
 from sage.modular.overconvergent.hecke_series import higher_level_katz_exp
 
-def DiagonalRestriction(F,k,m, pStab=1):
+def diagonal_restriction(F,k,m, pStab=1):
     """Compute the diagonal restriction of the Hilbert Eisenstein
     series E_(k,k)(1,psi) when psi corresponds to an 'odd indicator
     function' on the class group, determined by the quadratic form F;
@@ -39,7 +39,7 @@ def DiagonalRestriction(F,k,m, pStab=1):
         return M((ct+Diag_F).add_bigoh(m))
    
 
-def DiagonalRestrictionDerivative(Q,p,m, pprec=None):
+def diagonal_restriction_derivative(Q,p,m, pprec=None):
     """Compute the p-adic overconvergent modular form coming from the
     first order deformation of the Hilbert Eisenstein series E_(1,1)(1,psi) when psi
     corresponds to an 'odd indicator function' on the class group

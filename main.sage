@@ -28,7 +28,7 @@ def GS_unit_BQF(F, p, nterms=30, pprec=0):
 
     D = F.discriminant()
     assert kronecker_symbol(D, p) == -1, f"{p} is not inert in Q(sqrt({D}))"
-    drd = DiagonalRestrictionDerivative(F, p, nterms, pprec=pprec)
+    drd = diagonal_restriction_derivative(F, p, nterms, pprec=pprec)
     ct = drd[0]
 
     h = len(BinaryQF_reduced_representatives(D))
@@ -67,7 +67,7 @@ def GS_unit_BQF(F, p, nterms=30, pprec=0):
 #         print(f"Testing discriminants of conductor {N}")
 #         if N != p and D % N != 0 and is_prime(N):
 #             for Q in BinaryQF_reduced_representatives(N ^ 2 * D):
-#                 f = DiagonalRestriction(Q, 1, m, pStab=p)
+#                 f = diagonal_restriction(Q, 1, m, pStab=p)
 #                 print("f =", f)
 #                 print("trace of f =", modform_trace(f, p), "\n")
 
