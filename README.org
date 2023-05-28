@@ -31,7 +31,7 @@ GS_unit(221,3)
 #+end_src
 
 ** Zagier reduction of quadratic forms
-The file ~src/quad_forms.sage~ implements Zagier's reduction theory for indefinite binary quadratic forms, and in particular uses it to compute the automorph, meaning the stabiliser in $\mathrm{SL}_2(\mathbb Z)$ and special values of partial $\zeta$-functions, attached to indefinite binary quadratic forms.
+The file ~src/quadforms.sage~ implements Zagier's reduction theory for indefinite binary quadratic forms, and in particular uses it to compute the automorph, meaning the stabiliser in $\mathrm{SL}_2(\mathbb Z)$, and special values of partial $\zeta$-functions, attached to indefinite binary quadratic forms.
 
 #+begin_src jupyter-python :session py :kernel sagemath :exports both :results scalar
 F = BinaryQF([3,3,-5])
