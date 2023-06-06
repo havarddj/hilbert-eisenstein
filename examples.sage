@@ -4,8 +4,9 @@ import csv
 def batch_compute_D(upper_bound, p, lower_bound=1, replace=False):
 
     # first file create if it doesn't exist
-    if not os.path.isfile("data/D1000p3.csv"):
-        with open(f"data/D{upper_bound}p{p}.csv", 'w+', newline='') as csvfile:
+    filename = "data/D{upperbound}p{p}.csv"
+    if not os.path.isfile(filename):
+        with open(filename, 'w+', newline='') as csvfile:
             keys = ["D", "P", "p"]
             writer = csv.DictWriter(csvfile, fieldnames=keys)
             if not writer:
@@ -22,8 +23,7 @@ def batch_compute_D(upper_bound, p, lower_bound=1, replace=False):
 
         # check if already computed:
         if not replace:
-            with open(f"data/D{upper_bound}p{p}.csv", 'r',
-                      newline='') as csvfile:
+            with open(filename, 'r', newline='') as csvfile:
                 keys = ["D", "P", "p"]
                 reader = csv.DictReader(csvfile, fieldnames=keys)
 
@@ -42,7 +42,7 @@ def batch_compute_D(upper_bound, p, lower_bound=1, replace=False):
             pprec += 30
             nterms += 30
 
-        with open(f"data/D{upper_bound}p{p}.csv", 'a', newline='') as csvfile:
+        with open(filename, 'a', newline='') as csvfile:
             keys = ["D", "P", "p"]
             writer = csv.DictWriter(csvfile, fieldnames=keys)
 
