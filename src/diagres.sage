@@ -1,7 +1,7 @@
 # attach("quadforms.sage")
 # load("modforms.sage")
-from sage.modular.overconvergent.hecke_series import katz_expansions
-from sage.modular.overconvergent.hecke_series import higher_level_katz_exp
+# from sage.modular.overconvergent.hecke_series import katz_expansions
+# from sage.modular.overconvergent.hecke_series import higher_level_katz_exp
 
 def diagonal_restriction(F,k,m, pStab=1):
     """Compute the diagonal restriction of the Hilbert Eisenstein
@@ -56,7 +56,7 @@ def diagonal_restriction_derivative(Q,p,m, pprec=None):
     F = QuadraticField(D)
 
     ZZx.<x> = PolynomialRing(ZZ)
-    QQp = pAdicField(p,pprec, print_mode="val-unit")
+    QQp = pAdicField(p,pprec, type = 'capped-rel', print_mode="val-unit")
     FFp.<sqrtD> = QQp.extension(x^2-D0)
     assert FFp.degree() == 2
     
@@ -83,7 +83,7 @@ def diagonal_restriction_derivative(Q,p,m, pprec=None):
     if Diag_F == 0:
         return 0
     bnd = ModularForms(weight=2+(p-1)*floor(pprec*(p+1)/p)).dimension()-1
-    print("number of terms needed for overconvergent basis:", bnd)
+    # print("number of terms needed for overconvergent basis:", bnd)  # 
     if m < bnd:
         print(f"Need at least {bnd} terms to compute katz basis")
         return None

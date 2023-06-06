@@ -245,3 +245,9 @@ sage.quadratic_forms.binary_qf.BinaryQF.Zagier_L_value = zred_L_value
 # > timeit("[Meyer(Q) for Q in BinaryQF_reduced_representatives(400024)]")
 # > timeit("[Q.Zagier_L_value() for Q in BinaryQF_reduced_representatives(400024)]")
 # for various values of 400024. They're roughly equally fast!
+
+
+def test_expr(D):
+    G = [g.Zagier_reduce() for g in BinaryQF_reduced_representatives(D)]
+    coker = [c for c in G if not c.ideal().is_principal()]
+    return [c.Zagier_L_value() for c in coker]

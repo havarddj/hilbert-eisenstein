@@ -37,7 +37,8 @@ def GS_val_vec(D):
                 else:  # if we did count a zero, then we don't add zero but reset the flag
                     zero_flag = true
     # Next sort things
-    Lsort = sorted([v / gcd(Lvals) for v in Lvals])
+    # Lsort = sorted([v / gcd(Lvals) for v in Lvals])
+    Lsort = sorted([v for v in Lvals])
     print(f"Lsort = {Lsort}")
     # next add up
 
@@ -146,11 +147,12 @@ def algdep_p_adic(a, s):
     return ZZ["x"](K.matrix().LLL()[0].list()[:s + 1])
 
 
-def GS_algdep(a, s, val_list):
+def GS_algdep(a, s, D):
 
     if a.valuation() < 0:
-        return GS_algdep(1 / a, s, val_list)
+        return GS_algdep(1 / a, s, D)
     _.<x> = PolynomialRing(ZZ)
+    
     Kp = a.parent()
     d = Kp.degree()
     p = Kp.prime()
@@ -159,6 +161,7 @@ def GS_algdep(a, s, val_list):
     N = floor(Kp.precision_cap())
     # N = p^m
 
+    val_list = GS_val_vec(D)
     assert len(val_list) == s / 2  # if it has zeros this might throw errors
     # note that the extra zeros beyond the first don't contribute to any terms.
 
@@ -195,8 +198,7 @@ def GS_algdep(a, s, val_list):
             print(f"P1 = {P1} has first coeff {P1[0].factor()}\n")
             if P1[0] < 0:
                 P1 = -P1
-            if is_power_of_p(P1[0], p) and P1[d - 1] != 0:
-                P = P1
-                break
+            if P1[d - 1] != 0 and is_power_of_p(P1[0], p) and is_HCF(D,P1,p):
+                return P1
     # print(algdep(a,deg))
     return P

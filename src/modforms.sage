@@ -34,6 +34,8 @@ def is_overconvergent(M,f):
     """
     Kp = f[0].parent()
     Rp = Kp.integer_ring()
+    m = min([len(f.padded_list())]
+            + [len(M[i].padded_list()) for i in range(len(M))])
     # print(Kp)
     if M == []:
         print("Basis is empty")
@@ -43,14 +45,14 @@ def is_overconvergent(M,f):
     for g in M: 
         # make row vector of lifts of coefficients to Kp, and append to A
         # A.append([Rp(c.lift()) for c in row[1:]])
-        A.append([Rp(Kp(c)) for c in g.padded_list()[1:]])
+        A.append([Rp(Kp(c)) for c in g.padded_list()[1:m]])
     print("Solving linear system")
 
     try:
         # print("f has coeffs", f.padded_list())
         # print("basis matrix given by", Mat)
         # the \ operator solves Ax = B for x, same as solve_right
-        soln = Matrix(Rp,A).transpose() \ vector(Rp, f.padded_list()[1:])
+        soln = Matrix(Rp,A).transpose() \ vector(Rp, f.padded_list()[1:m])
 
         # soln = Matrix(Rp, A).transpose().solve_right(fvec)
         # soln = Matrix(Kp,A).kernel().basis()[0]

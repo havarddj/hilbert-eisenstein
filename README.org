@@ -30,8 +30,15 @@ The function ~GS_unit(D,p)~ computes the Gross--Stark units attached to a positi
 GS_unit(221,3)
 #+end_src
 
+By bumping the precision, it is also possible to find units for much bigger primes than in ~magma~. This is probably due to our slightly different ~algdep~ implementation.
+
+#+begin_src jupyter-python :session py :kernel sagemath :exports both :results none
+GS_unit(24,41,100,30)
+# returns 41*x^2 + 46*x + 41
+#+end_src
+
 ** Zagier reduction of quadratic forms
-The file ~src/quadforms.sage~ implements Zagier's reduction theory for indefinite binary quadratic forms, and in particular uses it to compute the automorph, meaning the stabiliser in $\mathrm{SL}_2(\mathbb Z)$, and special values of partial $\zeta$-functions, attached to indefinite binary quadratic forms.
+The file ~src/quadforms.sage~ implements Zagier's reduction theory for indefinite binary quadratic forms, and in particular uses it to compute the automorph, meaning the stabiliser of a BQF in $\mathrm{SL}_2(\mathbb Z)$, and special values of associated partial $\zeta$-functions.
 
 #+begin_src jupyter-python :session py :kernel sagemath :exports both :results scalar
 F = BinaryQF([3,3,-5])
@@ -48,7 +55,6 @@ F.Zagier_reduce()
 
 F.Zagier_reduced_cycle()
 # ([x^2 + 9*x*y + 3*y^2, 3*x^2 + 9*x*y + y^2], [9, 3])
-
 #+end_src
 
 
@@ -69,4 +75,5 @@ In fact, the code suggests something stronger: that the diagonal restriction lie
 + The function ~diagonal_restriction_derivative~ has been tested against the magma code in [[https://github.com/havarddj/drd][the drd repository]]. The (finite approximation to) the diagonal restriction  copy-pasted from ~sage~ is found by ~magma~ in the correct space of overconvergent forms, and the constant term gives rise to a GS unit in the usual way.  (Tested for $D = 33$, $p = 5$, $Q = 2x^2 + 3xy - 3y^2$.)
 * Todo:
   - [ ] Detach $p$-adic precision from number of terms of diagonal restriction derivative, and make intelligent choice automatically
-  - [ ] Implement algorithms to compute Stark--Heegner points using ~sage~'s existing $p$-adic uniformisation framework, see [[https://doc.sagemath.org/html/en/reference/arithmetic_curves/sage/schemes/elliptic_curves/ell_tate_curve.html][this.]]
+  - [ ] Implement algorithms to compute Stark--Heegner points using ~sage~'s existing $p$-adic uniformisation framework, see [[https://doc.sagemath.org/html/en/reference/arithmetic_curves/sage/schemes/elliptic_curves/ell_tate_curve.html][this.]] This requires in particular porting the ordinary projection routines from Lauder/Vonk.
+  - [ ] Add doctests, examples

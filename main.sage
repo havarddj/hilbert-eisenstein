@@ -12,9 +12,16 @@ attach("./src/oc.sage")
 attach("./src/diagres.sage")
 attach("./src/modforms.sage")
 attach("./src/quadforms.sage")
+attach("./src/test.sage")
+attach("./src/stark_heegner.sage")
 
 
-def GS_unit(D, p, nterms=30, pprec=0):
+def GS_unit(D, p, nterms=0, pprec=30):
+    """
+    Compute Brumer--Stark unit in the narrow Hilbert class field of
+    $\mathbb Q(\sqrtD)$, which is a `p`-unit.
+
+    """
     # pick quadratic form with minimal special value <=> GS-unit has
     # minimal p-valuation
     _, Q = sorted([(Q.Zagier_L_value().abs(), Q)
@@ -22,9 +29,15 @@ def GS_unit(D, p, nterms=30, pprec=0):
     return GS_unit_BQF(Q, p, nterms, pprec)
 
 
-def GS_unit_BQF(F, p, nterms=30, pprec=0):
+def GS_unit_BQF(F, p, nterms=0, pprec=30):
     if pprec == 0:
-        pprec = nterms
+        pprec = 2 * ceil(log(F.discriminant()) * p)
+        print(f"p-adic precision = {pprec}")
+    if nterms == 0:
+        # number of terms necessary to compute diagonal restriction derivative
+        # to desired precision
+        nterms = ceil(log(p) * pprec)
+        print(f"Number of modular form coefficients computed = {nterms}")
 
     D = F.discriminant()
     assert kronecker_symbol(D, p) == -1, f"{p} is not inert in Q(sqrt({D}))"
@@ -45,8 +58,8 @@ def GS_unit_BQF(F, p, nterms=30, pprec=0):
         print(f"{Qs[i]} has L-value equal to", Lvals[i])
     u = exp(e * ct) * p ^ (-F.Zagier_L_value() * e)
     print(f"running algdep on {u}")
-    # return algdep_p_adic(u, h)
-    return GS_algdep(u, h, GS_val_vec(D))
+    # return algdep_p_adic(u, 2 * h)
+    return GS_algdep(u, h, D)
 
 
 # def trace_test(D, p, bd=20, m=30):
