@@ -31,10 +31,15 @@ def batch_compute_D(upper_bound, p, lower_bound=1, replace=False):
                         D += 1
 
         P = 0
-        pprec = 30 * ceil(log(p))
+        pprec = 30
+        nterms = min(
+            ModularForms(weight=2 +
+                         (p - 1) * floor(pprec * (p + 1) / p)).dimension() - 1,
+            pprec)
         while P == 0:
             P = GS_unit(D, p, pprec=pprec, nterms=pprec + 20)
             pprec += 30
+            nterms += 30
 
         with open(f"data/D{upper_bound}p{p}.csv", 'a+', newline='') as csvfile:
             keys = ["D", "P", "p"]

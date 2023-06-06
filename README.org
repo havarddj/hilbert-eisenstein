@@ -77,3 +77,4 @@ In fact, the code suggests something stronger: that the diagonal restriction lie
   - [ ] Detach $p$-adic precision from number of terms of diagonal restriction derivative, and make intelligent choice automatically
   - [ ] Implement algorithms to compute Stark--Heegner points using ~sage~'s existing $p$-adic uniformisation framework, see [[https://doc.sagemath.org/html/en/reference/arithmetic_curves/sage/schemes/elliptic_curves/ell_tate_curve.html][this.]] This requires in particular porting the ordinary projection routines from Lauder/Vonk.
   - [ ] Add doctests, examples
+    (can do this using ~Pyment~, available from ~pip~.)
