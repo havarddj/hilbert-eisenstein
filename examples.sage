@@ -5,7 +5,8 @@ def batch_compute_D(upper_bound, p, lower_bound=1, replace=False):
 
     # first file create if it doesn't exist
     filename = f"data/D{upperbound}p{p}.csv"
-    if not os.path.isfile(filename):p
+
+    if not os.path.isfile(filename):
         with open(filename, 'w+', newline='') as csvfile:
             keys = ["D", "P", "p"]
             writer = csv.DictWriter(csvfile, fieldnames=keys)
