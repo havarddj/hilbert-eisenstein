@@ -50,7 +50,7 @@ def normalised_eis(wt,nterms):
 
     """
     f = eisenstein_series_qexp(wt, prec=nterms)
-    return f/f.coefficients()[0]
+    return f/f.padded_list()[0]
 
 def overconvergent_basis(wt,p, mp, nterms, base_ring=False):
     """Computes Katz basis of overconvergent modular forms using
@@ -61,7 +61,7 @@ def overconvergent_basis(wt,p, mp, nterms, base_ring=False):
 
     R.<q> = PowerSeriesRing(base_ring.integer_ring())
 
-    Ep1 = R(normalised_eis(hasse_Eis_weight(p), mp))
+    Ep1 = R(normalised_eis(hasse_power(p)*(p-1), mp))
     E4 = R(normalised_eis(4, mp))
     E6 = R(normalised_eis(6, mp))
     Delta = R(CuspForms(1,12).0.q_expansion(mp))
@@ -77,7 +77,8 @@ def overconvergent_basis(wt,p, mp, nterms, base_ring=False):
             Delta,
             delta_j,
             E4,E6)
-        B = [p^(floor(i*hasse_power(p)*p/(p+1)))*Ep1^(-i)*f for f in compl_space]
+        # B = [p^(floor(i*hasse_power(p)*p/(p+1)))*Ep1^(-i)*f for f in compl_space]
+        B = [p^(floor(i*hasse_power(p)*p/(p+1)))*Ep1^(-i)*f for f in compl_space]  # cf alan's code
         basis += [R(b) for b in B if b != 0]
         # print(f"i = {i}, len(B) = {len(basis)}")
     return basis
@@ -87,67 +88,52 @@ def ordinary_projection(G):
     """Compute the ordinary projection of G, in the space of
     overconvergent modular forms of weight 2 and tame level 1
     """
-    Rp = G.coefficients()[0].parent()
+    Rp = G[0].parent()
     p = Rp.prime()
 
     Rpq = G.parent()
 
     prec = Rp.precision_cap()
-    m = prec
+    m = bnd
 
-    # Rp = ZqFM(p^2,m)              # make fixed precision p-adic ring
-    
     
     bnd = ModularForms(weight=2+(p-1)*floor(prec*(p+1)/p)).dimension()-1
-    print("number of terms needed for overconvergent basis:", bnd)
+    
+    assert m >= bnd, f"number of terms needed for overconvergent basis: {bnd}"
     
     B = overconvergent_basis(2,p,p*m,m,base_ring = Rp)
-    print(f"number of terms of B[0] is {len(B[0].coefficients())}")
-    # this is currently a bit wasteful when trying to compute SH points:
-    # we computed this basis already to find constant term of DRD
-    # TODO: cache this in a clever way
+
+    # # this is currently a bit wasteful when trying to compute SH points:
+    # # we computed this basis already to find constant term of DRD
+    # # TODO: cache this in a clever way
 
     ell = len(B)
-    print(f"ell = {ell}")
-    print(f"ell*p = {p*ell}" )
-    Up = copy(zero_matrix(Rp, ell+1, ell+1))
+
+    Up = copy(zero_matrix(Rp, ell, ell))
 
     # image of basis under Up:
-
-    for j in range(ell):
-        print(p*(j-1))
-    T = copy(zero_matrix(Rp,ell,ell))
-    for i in range(ell):
-        for j in range(ell):
-            T[i,j] = B[i].coefficients()[p*j]
-        
-    print("found basis under Up")
+ 
+    T = matrix(Rp, [B[i].padded_list()[0:p*ell:p] for i in range(ell)])
+    assert T.dimensions() == (ell,ell)
+    
     for i in range(ell):
         Ti = T[i]
-        print(f"i = {i}, Ti = {Ti}")
         for j in range(ell):
-            Bj = Ti.parent()(B[j].coefficients()[:ell])
-            lj = ZZ(Bj[j])
-            u = ZZ(Ti[j])/lj
-            assert valuation(u,p) >= 0, f"encountered p in the denominator! for i = {i}, j = {j}";
-            if lj == 0:
-                print(j, Bj)
+            Bj = T[i].parent()(B[j].padded_list()[:ell])
+            lj = Bj[j]
+            u = ZZ(Ti[j])/ZZ(lj)
+            assert valuation(u,p) >= 0, f"encountered p in the denominator! for i = {i}, j = {j}, u = {u}, Tij = {T[i,j]}"
+            
             Up[i,j] = Rp(u)
             Ti  -=  Up[i,j]*Bj;
 
-    print("Computed Up matrix")
-    print("random coeff:", Up[1,3])    
-    Up_power = Up**(2*m)
+    ord_proj = Up**(2*m)
 
-    print("Computed power of Up matrix")
+    # write G in terms of basis 
+    G_vector = find_in_space(G,B, K=Rp)
 
-    print("first coeff:", Up_power[0,0])
-    comb = find_in_space(G,B, K=Rp)
-    
-    comb_ord = comb*Up_power
-    print("computed image of G under Up^2m")
-    print(f"equals: {vector(comb_ord)}") 
-    # Gord = Rpq(0)
-        # for i in range(ell):
-    #     Gord -= Rp(comb_ord[i]/comb[ell])*B[i]
-    return sum(comb_ord[i]/comb[ell-1]*B[i] for i in range(ell))
+    # apply ordinary projection
+    comb_ord = G_vector*ord_proj
+
+    # rewrite in terms of basis vectors
+    return sum(comb_ord[i]*B[i] for i in range(ell))

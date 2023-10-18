@@ -88,9 +88,9 @@ def algdepQp2(a, d):
     M[0, d + 1] = N
     M[1, d + 1] = N
     Mdash = M.right_kernel().basis()
-    print(Mdash)
+    # print(Mdash)
     Mred = Matrix(Mdash).LLL()
-    print(Mred)
+    # print(Mred)
     return QQ['x'](list(Mred[0])[:d + 1])
     # M = copy(zero_matrix(ZZ,d+n+1,d+n+1))
 
@@ -151,7 +151,7 @@ def GS_algdep(a, s, D):
 
     if a.valuation() < 0:
         return GS_algdep(1 / a, s, D)
-    _.<x> = PolynomialRing(ZZ)
+    ZZx.<x> = PolynomialRing(ZZ)
     
     Kp = a.parent()
     d = Kp.degree()
@@ -167,13 +167,13 @@ def GS_algdep(a, s, D):
 
     # primitive p^2-1 th root of 1 in Qp^2
     zeta = cyclotomic_polynomial(p ^ 2 - 1).roots(Kp)[0][0]
-    # print(f"zeta equals {zeta}")
-    print(f"partial sums = {val_list}")
+
+    print(f"Lower bound on p-valuation of coefficients  = {val_list}")
 
     P = 0
-    
-    for k in [0..ZZ((p ^ 2 - 1) / 2)]:
-        print(f"k = {k}")
+
+    for k in [0..ZZ(ceil((p ^ 2 - 1)/2))]:
+        print(f"Running algdep on exp(log(u))*zeta^{k}")
         b = a * zeta ^ k
         A = copy(zero_matrix(ZZ, s / 2 + 1, d))
         for i in range(s / 2 + 1):
@@ -186,7 +186,7 @@ def GS_algdep(a, s, D):
         M = block_matrix([[A], [p ^ N * identity_matrix(ZZ, d)]])
         K = M.left_kernel()
         short_vec = K.matrix().LLL()[0].list()[:s / 2 + 1]
-        print(f"short vector: {short_vec}")
+        # print(f"short vector: {short_vec}")
         P1 = x ^ (s / 2) * short_vec[s / 2]  # start with the middle coeff
 
         for j in range(s / 2):
@@ -195,7 +195,7 @@ def GS_algdep(a, s, D):
 
         P1 = P1 / gcd(list(P1))
         if P1[0] != 0:
-            print(f"P1 = {P1} has first coeff {P1[0].factor()}\n")
+            # print(f"P1 = {P1} has first coeff {P1[0].factor()}\n")
             if P1[0] < 0:
                 P1 = -P1
             if P1[d - 1] != 0 and is_power_of_p(P1[0], p) and is_HCF(D,P1,p):

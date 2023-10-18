@@ -74,10 +74,12 @@ def is_overconvergent(M,f):
 
     return(CT)
 
-def find_in_space(f, M, K=QQ):
+def find_in_space(f, M, K = QQ):
     """given a set of q-expansions M, and f a q-expansion, write f as
     linear combination of forms in M.
     """
+    if K == QQ:
+        K = f[0].parent()
     if "Power Series" not in str(f.parent()):
         print("Warning: f should be power series. Currently f is in ", f.parent())
     if M == []:
@@ -86,12 +88,15 @@ def find_in_space(f, M, K=QQ):
     R.<Z> = PowerSeriesRing(K)
     m = min([len(f.padded_list())]
             + [len(M[i].padded_list()) for i in range(len(M))])
-
+    
     A = [R(M[i]).padded_list()[:m] for i in range(len(M))]
 
     Mat = Matrix(K, A)
+
     try:
-        soln = Mat.transpose() \ vector(K, f.padded_list())
+        v = vector(K, f.padded_list()[:m])
+        soln = Mat.transpose() \ v
+
     except ValueError as e:
         if str(e) != "matrix equation has no solutions":
             raise
@@ -156,5 +161,6 @@ def modform_trace(f,p, m=30):
     TN = Mll.hecke_operator(N)
     tr = Gamma0(N).index()*f1 + TN(f2)  # (N+1)f_1 + T(N)f_2
     return Mll(tr)
+
 
 
