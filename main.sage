@@ -1,26 +1,30 @@
 """
 Compute Gross-Stark units using p-adic modular forms
 
+
 AUTHORS:
 
 - Håvard Damm-Johnsen (2023): Initial version
 
 """
 
+attach("./src/utilities.sage")
 attach("./src/algdep.sage")
-attach("./src/oc.sage")
+attach("./src/overconvergent.sage")
 attach("./src/diagres.sage")
 attach("./src/modforms.sage")
 attach("./src/quadforms.sage")
-attach("./src/test.sage")
 attach("./src/stark_heegner.sage")
+
 # attach("./src/lvals.sage")
 
 
 def GS_unit(D, p, nterms=0, pprec=0):
     """
-    Compute Brumer--Stark unit in the narrow Hilbert class field of
+    Compute Gross-Stark unit in the narrow Hilbert class field of
     $\mathbb Q(\sqrtD)$, which is a `p`-unit.
+
+    The function will try to guess the p-adic precision and number of q-expansion coefficients needed, but it is not particularly good at guessing. If you get nonsensical results, try to feed in higher precision. 
 
     """
     # pick quadratic form with minimal special value <=> GS-unit has
@@ -33,9 +37,14 @@ def GS_unit(D, p, nterms=0, pprec=0):
     return GS_unit_BQF(Q, p, nterms, pprec)
 
 
-def GS_unit_BQF(F, p, nterms=0, pprec=0):
+def GS_unit_BQF(Q, p, nterms=0, pprec=0):
+    """
+    Compute Gross-Star unit associated to narrow ideal class which
+    corresponds to the class of the indefinite binary quadratic form Q
 
-    D = F.discriminant()
+    For more details on this bijection, see [D-J23] or Cox's book 'Primes of the form x^2 + ny^2'. 
+    """
+    D = Q.discriminant()
     assert kronecker_symbol(D, p) == -1, f"{p} is not inert in Q(sqrt({D}))"
 
     if nterms == 0:
@@ -46,7 +55,7 @@ def GS_unit_BQF(F, p, nterms=0, pprec=0):
         nterms = 6 * p + ceil(10 * 1 / p)
 
     if pprec == 0:
-        target_prec = max(10, 3 * GS_val_vec(F.discriminant())[0])
+        target_prec = max(10, 3 * GS_val_vec(Q.discriminant())[0])
         bound = floor(nterms * (p + 1) / (hasse_power(p) * p))
         loss_factor = floor(bound * hasse_power(p) * p / (p + 1))
         pprec = target_prec + loss_factor
@@ -58,7 +67,7 @@ def GS_unit_BQF(F, p, nterms=0, pprec=0):
         nterms = max(bnd, nterms)
         print(f"Number of modular form coefficients to be computed = {nterms}")
 
-    drd = diagonal_restriction_derivative(F, p, nterms, pprec=pprec)
+    drd = diagonal_restriction_derivative(Q, p, nterms, pprec=pprec)
     ct = drd[0]
 
     h = len(BinaryQF_reduced_representatives(D))
@@ -74,10 +83,10 @@ def GS_unit_BQF(F, p, nterms=0, pprec=0):
     for i in range(len(Qs)):
 
         print(f"{Qs[i]} has L-value equal to", Lvals[i])
-    u = exp(e * ct) * p ^ (-F.Zagier_L_value() * e)
+    u = exp(e * ct) * p ^ (-Q.Zagier_L_value() * e)
     print(f"Attempting to find algebraic relations for {u}:\n")
     # return algdep_p_adic(u, 2 * h)
-    if F.conductor() > 1:
+    if Q.conductor() > 1:
         P = algdep_p_adic(u, h)
         K = QuadraticField(D)
         PF = PolynomialRing(K, "x")(P)
@@ -85,42 +94,7 @@ def GS_unit_BQF(F, p, nterms=0, pprec=0):
         print("Discriminant factors:", K.discriminant().factor())
         # for f, _ in PolynomialRing(K, "x")(P).factor():
         #     H.<h> = K.extension(f)
-        #     print("Absolute disc:", H.absolute_discriminant().factor())
+        #     print("Abslute disc:", H.absolute_discriminant().factor())
 
         return P
     return GS_algdep(u, h, D)
-
-
-# def trace_test(D, p, bd=20, m=30):
-#     # assert kronecker_symbol(
-#     #     D, p) == -1, f"p = {p} should be split in Q(\sqrt {D})"
-#     # trace_test(69,17, bd=3) shows that the trace is not zero in general
-#     assert is_discriminant(
-#         D), f"D = {D} should be a (fundamental) discriminant"
-#     if kronecker_symbol(D, p) == 1:
-#         print(f"p = {p} split in Q(sqrt {D}), coherent case")
-#     elif kronecker_symbol(D, p) == -1:
-#         print(f"p = {p} inert in Q(sqrt {D}), incoherent case")
-#     else:
-#         print(f"p = {p} ramified in Q(sqrt {D}), wacky case")
-#     if is_fundamental_discriminant(D):
-#         print("D is a fundamental discriminant")
-#     for N in range(2, bd):
-#         print(f"Testing discriminants of conductor {N}")
-#         if N != p and D % N != 0 and is_prime(N):
-#             for Q in BinaryQF_reduced_representatives(N ^ 2 * D):
-#                 f = diagonal_restriction(Q, 1, m, pStab=p)
-#                 print("f =", f)
-#                 print("trace of f =", modform_trace(f, p), "\n")
-
-
-#     return 0
-def find_difference(f, g):
-    # print("Normalised Eis:", f[1] / g[1] * g)
-    return f - f[1] / g[1] * g
-
-
-# def test_hyp(D,p,m):
-#     R.<q> = PowerSeriesRing(q,m)
-#     E = ModularForms(5).basis()[0].q_expansion(50)
-#     for Q in BinaryQF_reduced_representatives(D):

@@ -13,27 +13,28 @@ def Delta_data(Q, int m):
     Note that this corresponds to the magma function Diagonal_Restriction_Data
     """
     
-    F_pos_1, F_neg_1, forms_1 = get_RM_set(1,1,[[list(Q),[[1,0],[0,1]]]])
-    forms = [forms_1]
-    Fs = [[F_pos_1, F_neg_1]]
-    for n in range(2,m):         # n = 2,...,m-1
+    # assert is_fundamental_discriminant(Q.discriminant()) 
+    F_pos_old, F_neg_old, forms_old = get_RM_set(1,1,[[list(Q),[[1,0],[0,1]]]])
+    forms = [forms_old]
+    Fs = [[F_pos_old,F_neg_old]]
+    for n in range(2,m):         # m = 2,...,m-1
         p = min(divisors(n)[1:]) # smallest prime divisor (note m != 1)
-        d = ZZ(n/(p**(valuation(n,p))))
-        F_pos_n, F_neg_n, forms_n = get_RM_set(n,d,forms[d-1])
-        forms.append(forms_n)
-        Fs.append([F_pos_n, F_neg_n])
-        
+        d = n/(p**(valuation(n,p)))
+        F_pos_new, F_neg_new, forms_new = get_RM_set(n,d,forms[d-1])
+        forms.append(forms_new)
+        Fs.append([F_pos_new,F_neg_new])
+        # nred_forms.append(nr_forms)
     return([Fs, forms])
         
         
-def get_RM_set(int n, int d, list forms_d):
+def get_RM_set(int n, int d, list forms_old):
     r"""Compute the set of RM-points RM(n, tau)_f using algorithm from
     [lauder-vonk2021]_
 
     Input:
     - $n$ a positive integer.
-    - forms_old, a list of pairs [Q_d,delta_d], where Q_d is a quadratic form of discriminant d^2 *D, and delta_d a "Hecke matrix" of determinant d
-
+    - forms_old, a list of pairs [Q_old,gamma_old], where Q_old is a quadratic form of discriminant d^2 *D, and gamma_old a "Hecke matrix" of determinant d
+    # - Optionally, $D$ the fundamental discriminant associated to the discriminant of Q_old.
     #
     Output: 
     - 
@@ -43,151 +44,233 @@ def get_RM_set(int n, int d, list forms_d):
     # 05/07/22 - updated bits and bobs for anti-parallel business
     Corresponds to magma function RM_Points
     """
+
+
     ######
     # Compute Hecke matrices:
     assert n % d == 0
-    Hecke_nd = Hecke_matrices(n/d)
+    cdef list Mn = Hecke_matrices(n/d)
 
     # Initialise some data:
 
+    
     # start_time = time.time()
-    cdef list forms_n = []
-    cdef list F_pos_n = []
-    cdef list F_neg_n = []
-
-    MQ = MatrixSpace(QQ,2)
-    MZ = MatrixSpace(ZZ,2)    
-
-    for Q_d, delta_d in forms_d:
-        for H in Hecke_nd:
-            Q_n = BinaryQF(Q_d)*MZ(H)
-            delta_n = MZ(delta_d)*MZ(H)
-            assert delta_n.determinant() == n
+    cdef list forms_new = []
+    cdef int k
+    cdef list Q2
+    cdef list gamman
+    cdef bint flag              # This means binary integer, i.e. boolean
+    cdef list gnp               # For our purposes, matrices are lists of lists
+    cdef list Qnp
+    cdef list nr_forms = []     # list of nearly reduced forms
+    cdef list F_pos_new = []
+    cdef list F_neg_new = []
+    # Qlist = []
+    for Q_old, gamma_old in forms_old:
+        for k in range(len(Mn)):
+            # print(gamma_old, Mn[k])
+            gamma_new = Matrix(QQ, gamma_old)*Matrix(QQ, Mn[k])
+            gamma_new_inv = gamma_new**(-1)
+            # Q_new = matrix_action(Q_old, gamma_new.rows())
+            # following RM_Points in diagonal_restrictions.m:
+            # why the fuck does this work
+            a,b,c = Q_old
+            q,r  = Mn[k][0]
+            # r = Mn[k][0][1]
+            s,t = Mn[k][1]
+            # t = Mn[k][1][1]
+ 	    # // Action of M2(Z), uses the fact that s=0 for these Hecke representatives!!
+            
+            A = q**2*a
+            B = 2*q*r*a+b*n/d
+            C = r**2*a + r*t*b + t**2*c
+            Q_new = [A,B,C]
             
             # test if our buddy is equivalent to a
             # previously computed friendo:
             already_seen = False
 
-            for Q_n_old, delta_n_old in forms_n:
-                E = are_equivalent_mat(Q_n_old, list(Q_n))
-                # if Q_n_old and Q_n are equivalent over \Q, this computes
-                # the matrix E in SL2(Q) such that Q*E = Q_new
-                # if they are not, returns False
-                if E:
-                    assert MZ(E).determinant() == 1
-                    if MQ(delta_n_old)*MQ(E)*MQ(delta_n)**(-1) in MZ:
+            for Q, gamma in forms_new:
+                eqmat = are_equivalent_mat(Q,Q_new)
+                # print(eqmat)
+                # if Q and Q_new are equivalent over \Q, this computes the matrix E such that
+                # Q*E = Q_new
+                # print("Eqmat:", eqmat)
+                if eqmat:
+                    # print(Q, "is equivalent to ", Q_new)
+                    # Mat = mat_mult(mat_mult(gamma,eqmat), gamma_new_inv)
+                    Mat = Matrix(QQ,gamma)*Matrix(QQ,eqmat)*gamma_new_inv
+                    # print(Mat)
+                    # print(Mat[0][0]*Mat[1][1]-Mat[0][1]*Mat[1][0])
+                    # print("Matrix of equiv:", Mat)
+                    if (Mat[0][0].is_integer() and
+                        Mat[0][1].is_integer() and
+                        Mat[1][0].is_integer() and
+                        Mat[1][1].is_integer()):
                         already_seen = True
                         break
                         # No point in continuing if we found buddy-guy
-
-            # if Q_n is not equivalent to something seen before, add it, along with the NR forms in its cycle;
+                        # doesn't seem to speed up to much?
+            # if we have a new friendo, add
             if not already_seen:
-                forms_n.append([list(Q_n), delta_n])
-                F_p, F_m, F = nearly_reduced_forms(Q_n)
-                # F_p, F_m, F = magma_algo(Q_n)
-                F_pos_n += F_p
-                F_neg_n += F_m
-                
+                # print(F,gcd(f, F[0]))
+                # nr_forms += nearly_reduced_forms(list(Q_new))
+
+                # As_p, As_m = magma_algo(BinaryQF(Q_new))
+                Fs_p, Fs_m, Fs = magma_algo(BinaryQF(Q_new))
+                F_pos_new += Fs_p
+                F_neg_new += Fs_m
+                Fs_new = Fs_p + Fs_m
+                # print(Mn[k], Q_new, As_p)
+                forms_new.append([Q_new, gamma_new])
+                # add [Q_new,gamma_new] for next iteration
+
     # end_time = time.time()
     # print(f'Computing RM sets took {end_time - start_time} seconds')
-    return([F_pos_n, F_neg_n, forms_n])
+    return([F_pos_new, F_neg_new, forms_new])
 
 # cdef bint equivalent_pairs(list A, list B):
-def are_equivalent_mat(Q1, Q2):
-    """ Return False if Q1 and Q2 are not equivalent under SL2(Q), otherwise
-    return matrix M such that Q1*M =  Q2
-    """
-    S = Matrix(ZZ,[[1,0],[0,1]])
-    if Q1 == Q2:
-        return S.rows()
-    
+cpdef list are_equivalent_mat(Q1, Q2):
     F1, U1 = BinaryQF(Q1).reduced_form(transformation=True)
     F2, U2 = BinaryQF(Q2).reduced_form(transformation=True)
     F = F1
-
-    
-    sqrtD = ZZ(floor(F.discriminant().sqrt(prec=30)))
+    # cdef list S = [[1,0],[0,1]]
+    S = Matrix(QQ,[[1,0],[0,1]])
+    cdef int d = floor(F.discriminant().sqrt(prec=30))
+    cdef int a,b,c,cabs,sign,s
     while F != F2:
         a,b,c = list(F)
-        if abs(c) >= sqrtD:
-            s = sign(c) * floor(b/(2*abs(c)))
+        if c > 0:
+            cabs = c
+            sign = 1
         else:
-            s = sign(c) * floor((sqrtD+b) / (2*abs(c)))
-
-        Ms = Matrix(QQ,[[0,-1],[1,s]])
-        S = S*Ms
-        F = F*Ms
-        # if we run through the cycle and don't find F2, then they are not equivalent
-        if F == F1:              
+            cabs =  -c
+            sign = -1
+        if cabs >= d:
+            s = sign * floor((cabs+b) / (2*cabs))
+        else:
+            s = sign * floor((d+b) / (2*cabs))
+        # S = mat_mult(S, [[0,-1],[1,s]])
+        S  = S* Matrix(QQ,[[0,-1],[1,s]])
+        # F = F._Rho()
+        F = BinaryQF(c, -b + 2*s*c, a - b*s + c*s*s)
+        if F == F1:              # if they're not equivalent
             return False
-    assert BinaryQF(Q1)*(U1*S*U2**-1) == BinaryQF(Q2)
-    return (U1*S*U2**-1).rows()
+    # print(U1,U2,S)
+    # return(mat_mult(mat_mult(U1.rows(), S), (mat_inv(U2.rows()))))
+    return((U1*S*U2**-1).rows())
+
+# cdef bint is_in_SL2Z(list Q, int n, list gamman, list gnp):
+#     # """Returns True if $\gamma_n'\mathrm{Stab(\tau)}\gamma_n^-1
+#     # \subset \Sl_2(\Z), and false otherwise"""
+
+#     cdef list Stab =  [               # Elements of Sl_2(Z)/+-I of finite order.
+#         [[1,1],
+#          [-1,0]],
+#         [[1,0],
+#          [0,1]],
+#         [[1,-1],
+#          [1,0]],
+#         [[0,1],
+#          [-1,1]],
+#         [[0,1],
+#          [-1,0]],
+#         [[0,1],
+#          [-1,-1]] ]
+#     cdef list s
+#     # cdef matrix Mat # -- not valid type, seems complicated
+#     cdef list gamma_ninv = mat_inv_UT(gamman, n)  # no need to do this every time
+#     for s in Stab:
+#         # Z = matrix_action(Q, s) # no errors found here
+#         # print(Z, Q, Z == Q)
+#         if matrix_action(Q, s) == Q:  # test if s in stab(Q)
+#             Mat = mat_mult(mat_mult(gnp,s), gamma_ninv)
+#             # Mat = Matrix(gnp)*Matrix(s)*Matrix(gamman)**-1 # this is slower bc type conversion
+#             # Check manually if things are integral:
+
+#             if not (Mat[0][0].is_integer() and
+#                     Mat[0][1].is_integer() and
+#                     Mat[1][0].is_integer() and
+#                     Mat[1][1].is_integer()):
+#                 return(False)
+                
+#     return(True)
 
 
-def nearly_reduced_forms(Q):
+cdef list matrix_action(list Q, list A):
+     # CF Lammermeyer BQFs p.4
+     cdef int r = A[0][0]
+     cdef int s = A[0][1]
+     cdef int t = A[1][0]
+     cdef int u = A[1][1]
+     return([Q[0]*r**2 + Q[1]*r*t + Q[2]*t**2,
+             2*(Q[0]*r*s + Q[2]*t*u) + Q[1]*(r*u + s*t),
+             Q[0]*s**2 + Q[1]*s*u + Q[2]*u**2])
+
+
+
+cpdef list mat_mult(list A, list B):
+    return([[A[0][0]*B[0][0] + A[0][1]*B[1][0],
+             A[0][0]*B[0][1] + A[0][1]*B[1][1]],
+            [A[1][0]*B[0][0] + A[1][1]*B[1][0],
+             A[1][0]*B[0][1] + A[1][1]*B[1][1]]])
+
+cpdef list mat_inv(list A):
+     cdef int n = A[0][0]*A[1][1]-A[0][1]*A[1][0]
+     return([[A[1][1]/n, -A[0][1]/n], [-A[1][0]/n, A[0][0]/n]])
+
+cpdef list nearly_reduced_forms(list F):
+    Q = BinaryQF(F)
     Q0 = Q.reduced_form()
-    Q = Q0                      # no need to keep info about Q
+    Q = Q0                      # no need to keep info about F
 
-    sqrtD = Q.discriminant().sqrt(50)
-    cdef list forms_p = []
-    cdef list forms_m = []
+    cdef int d = floor(Q.discriminant().sqrt(30))
     cdef list forms = []
     cdef bint started = False
     cdef int a,b,c,s,j
     while Q != Q0 or not started:
         started = True
+        # print(Q)
         Q = Q._Rho()            # set Q to be next reduced form in cycle
         a,b,c = list(Q)
-        # now compute s, number of forms on river between previous F and F:
-        if abs(c) > sqrtD:
-            s = abs(floor(b/(2*abs(c))))
+        if c > 0:
+            cabs = c
         else:
-            s = abs(floor((sqrtD+b)/(2*abs(c))))
+            cabs =  -c
+        # now compute s, number of forms on river between previous F and F:
+        if cabs > d:
+            s = abs(floor(b/(2*cabs)))
+        else:
+            s = abs(floor((d+b)/(2*cabs)))
+        # print("s =", s)
         
         if a > 0:                                 # ensure form added has a>0
             for j in range(1,s+1):
-                A = a + j*b + c*j**2 
-                B = b + 2*j*c
-                C = c
-                assert A*C < 0
-                forms_p.append([A,B,C])
-                forms_m.append([C,-B,A])
-                forms.append([A,B,C])
-        if a < 0:
+                # print(j)
+                # forms.append(F)
+                # Fi =  # translate F
+                # forms.append(matrix_action([a,b,c],[[1,0],[j,1]]))
+                forms.append([a+j*b+j*j*c, b+2*j*c, c])
+        else:
             for j in range(1,s+1):
-                A = c
-                B = -b+2*j*c
-                C = a-j*b + c*j**2
-                assert A*C < 0
-                forms_p.append([A,B,C])
-                forms_m.append([C, -B, A])
-                forms.append([A, B, C])
+                # print(j)
+                # simply flip form if not
+                # Fi = 
+                forms.append([c, -b+2*j*c, a-j*b + j*j*c])
+            
+        # F = matrix_action(F, [[0,-1],[1,0]]) # after translating, flip
         
-    return [forms_p, forms_m,forms]
+    return(forms)
                 
-def Hecke_matrices(int n, Q = False):
-    # print(f"Computing Hecke matrices for n = {n}")
+cpdef list Hecke_matrices(int n):
     # start_time = time.time()
     # print(n)
-    if Q:
-        M2Z = MatrixSpace(ZZ,2,2)
-        D,N = Q.discriminant(), Q.conductor()
-    else:
-        N = 0
-
     cdef int d
     cdef list Mn = []
     for d in divisors(n):
+        # if gcd(d, n/d) == 1:
         for j in range(d):  # j= 0,...d-1
-            H = [[d,j], [0,n/d]]
-            if n == N > 1:
-                if any(Q.is_equivalent(Q0.matrix_action_right(M2Z(H))) for Q0 in BinaryQF_reduced_representatives(D/N**2)):
-                    # print(f"removed {H}")  # 
-                    pass
-                else:
-                    Mn.append(H)
-            else:
-                Mn.append(H)
+            Mn.append([[d,j], [0,n/d]])
     return(Mn)
                 
 cpdef list tp_elts_of_trace_n(F, int n, invDiff, int bd):
@@ -207,9 +290,9 @@ cpdef list tp_elts_of_trace_n(F, int n, invDiff, int bd):
     # return([(b + n*a)/(2*a) for b in [-bd..bd]])
     return(nulist)
 
-def magma_algo(F):
+cpdef list magma_algo(F):
     """Should correspond to nearly_reduced_forms, but translation of
-    the magma algo, so spits out A+-
+    the magma algo, so pukes out A+-
     05/07/22: updated to match (updated) magma algorithm which actually does forms, not just As
     """
     F0 = F.reduced_form()
@@ -218,18 +301,21 @@ def magma_algo(F):
     cdef list Fs_p = []
     cdef list Fs_m = []
     
-    started = False             # run at least once
+    started = False
     while F != F0 or not started:
         started = True
-        a, b, c = list(F)
+        a,b,c = list(F)
         F = F._Rho()
-        s = abs((b + F[1])/(2*c))
+        s = ((b + F[1])/(2*c)).abs()
         if a > 0:
             for i in range(1,s+1):  # = 1,...,s 
                 A = a + i*b + c*i**2 
                 B = b + 2*i*c
                 C = c
-                assert A*C < 0
+                # As_p.append(A)
+                # As_m.append(C)
+                # Fs.append([A, B, C])
+                # Fs.append([C, -B, A])
                 Fs_p.append([A,B,C])
                 Fs_m.append([C,-B,A])
                 Fs.append([A,B,C])
@@ -238,28 +324,11 @@ def magma_algo(F):
                 A = c
                 B = -b+2*i*c
                 C = a-i*b + c*i**2
-                assert A*C < 0
+                # As_p.append(A)
+                # As_m.append(C)
+                # Fs.append([A, B, C])
+                # Fs.append([C, -B, A])
                 Fs_p.append([A,B,C])
                 Fs_m.append([C, -B, A])
                 Fs.append([A, B, C])
     return [Fs_p,Fs_m,Fs]
-
-def bad_Hecke_matrices(Q):
-    """If Q is nonfundamental and can be written as Hecke matrix applied to Q0 of fundamental discriminant, return
-    list of matrices H such that Q is equivalent to Q0.H
-    """
-    D, N = Q.discriminant(), Q.conductor()
-    if N ==1:
-        return []
-
-    HM = Hecke_matrices(N)
-    M2Z = MatrixSpace(ZZ,2,2)
-
-    bad_matrices = []
-    for Q0 in BinaryQF_reduced_representatives(D/(N**2)):
-        for H in HM:
-            if Q.is_equivalent(Q0.matrix_action_right(M2Z(H))):
-                bad_matrices.append(H)
-
-    return bad_matrices
-    
