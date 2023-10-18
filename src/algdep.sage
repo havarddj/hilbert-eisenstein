@@ -58,12 +58,12 @@ def GS_algdep(a, s, D):
     # primitive p^2-1 th root of 1 in Qp^2
     zeta = cyclotomic_polynomial(p ^ 2 - 1).roots(Kp)[0][0]
 
-    print(f"Lower bound on p-valuation of coefficients  = {val_list}")
+    # print(f"Lower bound on p-valuation of coefficients  = {val_list}")
 
     P = 0
 
     for k in [0..ZZ(ceil((p ^ 2 - 1)/2))]:
-        print(f"Running algdep on exp(log(u))*zeta^{k}")
+        # print(f"Running algdep on exp(log(u))*zeta^{k}")
         b = a * zeta ^ k
         A = copy(zero_matrix(ZZ, s / 2 + 1, d))
         for i in range(s / 2 + 1):
@@ -160,9 +160,8 @@ def GS_val_vec(D):
                 else:  # if we did count a zero, then we don't add zero but reset the flag
                     zero_flag = true
     # Next sort things
-    # Lsort = sorted([v / gcd(Lvals) for v in Lvals])
     Lsort = sorted([v for v in Lvals])
-    print(f"Lsort = {Lsort}")
+    # print(f"Lsort = {Lsort}")
     # next add up
 
     return list(reversed([sum(Lsort[:i])

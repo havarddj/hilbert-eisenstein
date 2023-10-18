@@ -65,7 +65,7 @@ def GS_unit_BQF(Q, p, nterms=0, pprec=0):
                            (p - 1) * floor(pprec *
                                            (p + 1) / p)).dimension() - 1
         nterms = max(bnd, nterms)
-        print(f"Number of modular form coefficients to be computed = {nterms}")
+        print(f"Number of q-expansion coefficients to be computed = {nterms}")
 
     drd = diagonal_restriction_derivative(Q, p, nterms, pprec=pprec)
     ct = drd[0]
@@ -73,18 +73,18 @@ def GS_unit_BQF(Q, p, nterms=0, pprec=0):
     h = len(BinaryQF_reduced_representatives(D))
     e = genus_field_roots_of_1(D)
 
-    print(f"number of roots of unity in HCF={e}")
+    # print(f"number of roots of unity in HCF={e}")
     # To compute the valuation of the constant term, our choice of
     # normalisation is precisely so that the constant term is p^R where
     # R is the sum of the positive slopes of the vector of L-values
     Qs = BinaryQF_reduced_representatives(D)
     Lvals = [ZZ(Q.Zagier_L_value() * e) for Q in Qs]
     Lvals = [v for v in Lvals]
-    for i in range(len(Qs)):
+    # for i in range(len(Qs)):
 
-        print(f"{Qs[i]} has L-value equal to", Lvals[i])
+    #     print(f"{Qs[i]} has L-value equal to", Lvals[i])
     u = exp(e * ct) * p ^ (-Q.Zagier_L_value() * e)
-    print(f"Attempting to find algebraic relations for {u}:\n")
+    # print(f"Attempting to find algebraic relations for {u}:\n")
     # return algdep_p_adic(u, 2 * h)
     if Q.conductor() > 1:
         P = algdep_p_adic(u, h)
@@ -98,3 +98,7 @@ def GS_unit_BQF(Q, p, nterms=0, pprec=0):
 
         return P
     return GS_algdep(u, h, D)
+
+
+def run_tests():
+    load("./src/test.sage")
