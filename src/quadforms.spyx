@@ -162,7 +162,7 @@ cpdef list are_equivalent_mat(Q1, Q2):
 
 # cdef bint is_in_SL2Z(list Q, int n, list gamman, list gnp):
 #     # """Returns True if $\gamma_n'\mathrm{Stab(\tau)}\gamma_n^-1
-#     # \subset \Sl_2(\Z), and false otherwise"""
+#     # subset Sl_2(\Z), and false otherwise"""
 
 #     cdef list Stab =  [               # Elements of Sl_2(Z)/+-I of finite order.
 #         [[1,1],

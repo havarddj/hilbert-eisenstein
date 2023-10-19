@@ -40,7 +40,8 @@ else:
     print("FAILED")
 
 print("\nD=105, k = 1, 11-stabilised")
-if diagonal_restriction(BQFs(105)[0],1,11) == 0:
+
+if diagonal_restriction(BQFs(105)[0],1,11).q_expansion() == 0:
     print("PASSED")
 else:
     print("FAILED")

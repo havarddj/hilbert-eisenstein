@@ -7,7 +7,13 @@ Navigate to the main directory, run
 #+begin_src jupyter-python :session py :kernel sagemath :exports both :results scalar
 load("main.sage")
 #+end_src
-This loads the necessary files using ~sage~'s ~attach~ command. 
+This loads the necessary files using ~sage~'s ~attach~ command.
+
+To run tests to make sure everything works as intended, you can then type in
+#+begin_src jupyter-python :session py :kernel sagemath :exports both :results scalar
+run_tests()
+#+end_src
+
 
 * Examples
 
@@ -73,8 +79,9 @@ In fact, the code suggests something stronger: that the diagonal restriction lie
 
 * On compatibility with [[https://github.com/havarddj/drd][magma code]]
 + The function ~diagonal_restriction_derivative~ has been tested against the magma code in [[https://github.com/havarddj/drd][the drd repository]]. The (finite approximation to) the diagonal restriction  copy-pasted from ~sage~ is found by ~magma~ in the correct space of overconvergent forms, and the constant term gives rise to a GS unit in the usual way.  (Tested for $D = 33$, $p = 5$, $Q = 2x^2 + 3xy - 3y^2$.)
+
 * Todo:
-  - [ ] Detach $p$-adic precision from number of terms of diagonal restriction derivative, and make intelligent choice automatically
+  - [X] Detach $p$-adic precision from number of terms of diagonal restriction derivative, and make intelligent choice automatically
   - [ ] Implement algorithms to compute Stark--Heegner points using ~sage~'s existing $p$-adic uniformisation framework, see [[https://doc.sagemath.org/html/en/reference/arithmetic_curves/sage/schemes/elliptic_curves/ell_tate_curve.html][this.]] This requires in particular porting the ordinary projection routines from Lauder/Vonk.
-  - [ ] Add doctests, examples
+  - [X] Add doctests, examples
     (can do this using ~Pyment~, available from ~pip~.)
